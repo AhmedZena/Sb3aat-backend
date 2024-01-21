@@ -4,8 +4,14 @@ const app = express();
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 
+// import util ApiError
+let ApiError = require("./util/apiError");
+
+// import middleware of errors
+let errorMiddleWare = require("./middlewares/errorMiddleware");
+
 // importing config for the db connection
-const dbConnect = require("./middleware/DbConnect");
+const dbConnect = require("./config/DbConnect");
 
 // importing routes
 const categoryRoutes = require("./routes/categories");
@@ -26,13 +32,25 @@ dbConnect();
 // Middlewares
 app.use(express.json());
 
-// Routes
-app.use("/api/categories", categoryRoutes);
-
 // Importing routes
 app.get("/", (req, res) => {
   res.send("Welcome to my E-commerce API");
 });
+
+// Routes
+app.use("/api/categories", categoryRoutes);
+
+// Handling unhandled routes
+app.all("*", (req, res, next) => {
+  //   let err = new Error(`Can't find ${req.originalUrl} on this server`);
+  //   err.status = "fail";
+  //   err.statusCode = 404;
+
+  next(new ApiError(`Can't find ${req.originalUrl} on this server`, 400));
+});
+
+//Global Error handling middleware
+app.use(errorMiddleWare);
 
 // Listening to port
 let port = process.env.PORT || 8000;

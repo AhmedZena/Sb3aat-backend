@@ -1,6 +1,10 @@
 // controller for categories it is data access layer
 
 let Category = require("../model/categories");
+const asyncHandler = require("express-async-handler");
+
+// import class ApiError for sending error to it
+let ApiError = require("../util/apiError");
 
 // Get all categories
 // let getAllCategories = (req, res) => {
@@ -53,11 +57,19 @@ let getAllCategories = (req, res) => {
 }; // http://localhost:8000/api/categories?page=1&limit=2
 
 // Get category by id
-let getCategoryById = (req, res) => {
-  Category.findById(req.params.id)
-    .then((category) => res.json(category))
-    .catch((err) => res.status(400).json(`Error: ${err}`));
-};
+let getCategoryById = asyncHandler(async (req, res, next) => {
+  console.log("hi");
+  //   Category.findById(req.params.id)
+  //     .then((category) => res.json(category))
+  //     .catch((err) => res.status(400).json(`Error: ${err}`));
+  let category = await Category.findById(req.params.id);
+  console.log(category);
+  if (category) {
+    res.status(200).json({ category });
+  } else {
+    next(new ApiError("category not found", 404));
+  }
+});
 
 // Add new category
 let addCategory = (req, res) => {
@@ -72,31 +84,40 @@ let addCategory = (req, res) => {
 };
 
 // Update category by id
-let updateCategory = (req, res) => {
+let updateCategory = asyncHandler(async (req, res, next) => {
   console.log(req.params.id);
-  Category.findById(req.params.id)
-    .then((category) => {
-      category.name = req.body.name;
-      category.description = req.body.description;
-      console.log(category);
-      category
-        .save()
-        .then(() => res.json("Category updated successfully"))
-        .catch((err) => res.status(400).json(`Error: ${err}`));
-    })
-    .catch((err) => res.status(400).json(`Error: ${err}`));
-};
-
-// Delete category by id
-let deleteCategory = (req, res) => {
-  Category.findByIdAndDelete(req.params.id).then((data) => {
-    if (!data) {
-      res.status(404).json("Category not found");
-    } else {
-      res.json("Category deleted successfully");
+  console.log(req.body);
+  let { name, description } = req.body;
+  let category = await Category.findByIdAndUpdate(
+    req.params.id,
+    {
+      name,
+      description,
+    },
+    {
+      new: true,
     }
-  });
-};
+  );
+  if (category) {
+    console.log({ msg: "cagtegory updated successfully", data: category });
+    res
+      .status(200)
+      .json({ msg: "cagtegory updated successfully", data: category });
+  } else {
+    next(new ApiError("category not found", 404));
+  }
+});
+
+// Delete category by id with asyncHandler
+let deleteCategory = asyncHandler(async (req, res, next) => {
+  const category = await Category.findByIdAndDelete(req.params.id);
+  console.log(category);
+  if (category) {
+    res.json({ msg: "Category deleted successfully", category });
+  } else {
+    next(new ApiError("category not found", 404));
+  }
+});
 
 // delete all categories
 let deleteAllCategories = (req, res) => {
