@@ -1,0 +1,7 @@
+
+# ignore folder node_modules 
+node_modules/
+
+# ignore file  .config.env
+# .config.env
+
