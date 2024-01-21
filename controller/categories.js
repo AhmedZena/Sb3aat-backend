@@ -6,30 +6,6 @@ const asyncHandler = require("express-async-handler");
 // import class ApiError for sending error to it
 let ApiError = require("../util/apiError");
 
-// Get all categories
-// let getAllCategories = (req, res) => {
-//   Category.find().then((categories) =>
-//     res.status(200).json({ results: categories.length, categories })
-//   );
-// };
-
-// // get categroy in a specific page and limit
-// let getCategoriesLimitSkip = (req, res) => {
-//   const page = parseInt(req.query.page) || 1;
-//   const limit = parseInt(req.query.limit) || 10;
-//   const startIndex = (page - 1) * limit;
-//   Category.find()
-//     .limit(limit)
-//     .skip(startIndex)
-//     .then((categories) => {
-//       res.json({
-//         results: categories.length,
-//         categories,
-//       });
-//     })
-//     .catch((err) => res.status(400).json(`Error: ${err}`));
-// };
-
 // Get all categories with pagination and if there is no page or limit in the query string it will return all categories
 let getAllCategories = (req, res) => {
   const page = parseInt(req.query.page);
@@ -73,10 +49,13 @@ let getCategoryById = asyncHandler(async (req, res, next) => {
 
 // Add new category
 let addCategory = (req, res) => {
-  const newCategory = new Category({
-    name: req.body.name,
-    description: req.body.description,
-  });
+  //   const newCategory = new Category({
+  //     name: req.body.name,
+  //     description: req.body.description,
+  //   });
+
+  const newCategory = new Category(req.body);
+
   newCategory
     .save()
     .then((category) => res.status(201).json(category))
@@ -87,12 +66,11 @@ let addCategory = (req, res) => {
 let updateCategory = asyncHandler(async (req, res, next) => {
   console.log(req.params.id);
   console.log(req.body);
-  let { name, description } = req.body;
+  //   let { name, description } = req.body;
   let category = await Category.findByIdAndUpdate(
     req.params.id,
     {
-      name,
-      description,
+      $set: req.body,
     },
     {
       new: true,

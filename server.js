@@ -2,7 +2,6 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const mongoose = require("mongoose");
 
 // import util ApiError
 let ApiError = require("./util/apiError");
@@ -14,7 +13,11 @@ let errorMiddleWare = require("./middlewares/errorMiddleware");
 const dbConnect = require("./config/DbConnect");
 
 // importing routes
+// category
 const categoryRoutes = require("./routes/categories");
+
+// service
+const serviceRoutes = require("./routes/serviceRoute");
 
 // dontenv config
 require("dotenv").config({ path: "./.config.env" });
@@ -38,14 +41,14 @@ app.get("/", (req, res) => {
 });
 
 // Routes
+// category
 app.use("/api/categories", categoryRoutes);
+
+// service
+app.use("/api/services", serviceRoutes);
 
 // Handling unhandled routes
 app.all("*", (req, res, next) => {
-  //   let err = new Error(`Can't find ${req.originalUrl} on this server`);
-  //   err.status = "fail";
-  //   err.statusCode = 404;
-
   next(new ApiError(`Can't find ${req.originalUrl} on this server`, 400));
 });
 
