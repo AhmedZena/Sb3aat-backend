@@ -19,6 +19,9 @@ const categoryRoutes = require("./routes/categories");
 // service
 const serviceRoutes = require("./routes/serviceRoute");
 
+// courses
+const coursesRoutes = require("./routes/courses");
+
 // dontenv config
 require("dotenv").config({ path: "./.config.env" });
 console.log(process.env.PORT);
@@ -46,6 +49,9 @@ app.use("/api/categories", categoryRoutes);
 
 // service
 app.use("/api/services", serviceRoutes);
+
+// courses
+app.use("/api/courses", coursesRoutes);
 
 // Handling unhandled routes
 app.all("*", (req, res, next) => {

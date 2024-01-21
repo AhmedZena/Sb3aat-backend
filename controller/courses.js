@@ -1,21 +1,37 @@
 // serviceControl.js
 const { parse } = require("dotenv");
-const coursesModel = require("./../modules/coursesModel");
+const coursesModel = require("./../model/coursesModel");
 
 const createCourses = (req, res) => {
   console.log(req.body);
-  const { FreelancerId, Title,  Description, CategoryID,Price, Duration , CourseMaterial} = req.body;
-  console.log(FreelancerId, Title,  Description, CategoryID,Price, Duration,CourseMaterial);
+  const {
+    FreelancerId,
+    Title,
+    Description,
+    CategoryID,
+    Price,
+    Duration,
+    CourseMaterial,
+  } = req.body;
+  console.log(
+    FreelancerId,
+    Title,
+    Description,
+    CategoryID,
+    Price,
+    Duration,
+    CourseMaterial
+  );
 
   try {
     const newCourses = new coursesModel({
-        FreelancerId,
+      FreelancerId,
       Title,
       Description,
       CategoryID,
-     Price,
+      Price,
       Duration,
-      CourseMaterial
+      CourseMaterial,
     });
 
     newCourses
@@ -24,7 +40,9 @@ const createCourses = (req, res) => {
         res.status(201).json(savedCourses);
       })
       .catch((error) => {
-        res.status(500).json({ error: "Failed to create Courses", details: error });
+        res
+          .status(500)
+          .json({ error: "Failed to create Courses", details: error });
       });
   } catch (error) {
     res.status(400).json({ error: "Invalid request", details: error });
@@ -43,7 +61,9 @@ const getCourses = (req, res) => {
       res.status(200).json(courses);
     })
     .catch((error) => {
-      res.status(500).json({ error: "Failed to retrieve courses", details: error });
+      res
+        .status(500)
+        .json({ error: "Failed to retrieve courses", details: error });
     });
 };
 //get courses by id :-
@@ -68,16 +88,24 @@ const updateCourses = (req, res) => {
   const updatedFields = req.body;
 
   if (!coursesId || Object.keys(updatedFields).length === 0) {
-    return res.status(400).json({ error: "Invalid request. Missing id or updatedFields." });
+    return res
+      .status(400)
+      .json({ error: "Invalid request. Missing id or updatedFields." });
   }
 
   coursesModel
-    .findOneAndUpdate({ coursesId: coursesId }, { $set: updatedFields }, { new: true })
+    .findOneAndUpdate(
+      { coursesId: coursesId },
+      { $set: updatedFields },
+      { new: true }
+    )
     .then((updatedCourses) => {
       res.status(200).json(updatedCourses);
     })
     .catch((error) => {
-      res.status(500).json({ error: "Failed to update courses", details: error });
+      res
+        .status(500)
+        .json({ error: "Failed to update courses", details: error });
     });
 };
 //delete courses :-
@@ -96,4 +124,10 @@ const deleteCourses = (req, res) => {
   });
 };
 
-module.exports = { createCourses, getCourses, updateCourses, getCoursesById, deleteCourses };
+module.exports = {
+  createCourses,
+  getCourses,
+  updateCourses,
+  getCoursesById,
+  deleteCourses,
+};
