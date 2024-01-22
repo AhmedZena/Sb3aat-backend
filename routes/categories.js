@@ -1,6 +1,14 @@
 let express = require("express");
 let router = express.Router();
-let Category = require("../model/categories");
+// let Category = require("../model/categories");
+
+let {
+  getCategoryByIdValidator,
+  createCategoryValidator,
+  updateCategoryValidator,
+  deleteCategoryValidator,
+} = require("../util/validators/categoryValidator");
+
 let {
   getAllCategories,
   getCategoryById,
@@ -14,13 +22,15 @@ let {
 router
   .route("/")
   .get(getAllCategories)
-  .post(addCategory)
+  .post(createCategoryValidator, addCategory)
   .delete(deleteAllCategories);
 
 router
   .route("/:id")
-  .get(getCategoryById)
-  .patch(updateCategory)
-  .delete(deleteCategory);
+  .get(getCategoryByIdValidator, getCategoryById)
+  .patch(updateCategoryValidator, updateCategory)
+  .delete(deleteCategoryValidator, deleteCategory);
+
+// router.route("/:id").get(
 
 module.exports = router;

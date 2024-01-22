@@ -1,5 +1,5 @@
 let mongoose = require("mongoose");
-require("dotenv").config({ path: "./.config.env" });
+require("dotenv").config({ path: "../.config.env" });
 
 function DbConnect() {
   mongoose

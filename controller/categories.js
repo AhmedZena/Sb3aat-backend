@@ -49,13 +49,16 @@ let getCategoryById = asyncHandler(async (req, res, next) => {
 
 // Add new category
 let addCategory = (req, res) => {
-  //   const newCategory = new Category({
-  //     name: req.body.name,
-  //     description: req.body.description,
-  //   });
-
-  const newCategory = new Category(req.body);
-
+  //   const newCategory = new Category(req.body);
+  const { name, description, catImgSrc } = req.body;
+  let slug = name.trim().replace(/ /g, "-");
+  const newCategory = new Category({
+    name,
+    description,
+    slug,
+    catImgSrc,
+  });
+  console.log(newCategory);
   newCategory
     .save()
     .then((category) => res.status(201).json(category))
@@ -64,13 +67,20 @@ let addCategory = (req, res) => {
 
 // Update category by id
 let updateCategory = asyncHandler(async (req, res, next) => {
-  console.log(req.params.id);
-  console.log(req.body);
-  //   let { name, description } = req.body;
+  //   console.log(req.params.id);
+  //   console.log(req.body);
+  let { name, description, catImgSrc } = req.body;
+  let slug = name.trim().replace(/ /g, "-");
+
   let category = await Category.findByIdAndUpdate(
     req.params.id,
     {
-      $set: req.body,
+      $set: {
+        name,
+        description,
+        slug,
+        catImgSrc,
+      },
     },
     {
       new: true,

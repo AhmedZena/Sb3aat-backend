@@ -63,6 +63,20 @@ app.use(errorMiddleWare);
 
 // Listening to port
 let port = process.env.PORT || 8000;
-app.listen(port, () => {
+// app.listen(port, () => {
+//   console.log(`Listening to port ${port}...`);
+// });
+
+const server = app.listen(port, () => {
   console.log(`Listening to port ${port}...`);
+});
+
+// handle rejection outside express
+process.on("unhandledRejection", (err) => {
+  console.log(`Error: ${err.message}`);
+  console.log("Shutting down the server due to unhandled promise rejection");
+  server.close(() => {
+    console.log("Server is down");
+    process.exit(1);
+  });
 });

@@ -1,6 +1,6 @@
 // serviceControl.js
 const { parse } = require("dotenv");
-const coursesModel = require("./../model/coursesModel");
+const coursesModel = require("./../model/courses");
 
 const createCourses = (req, res) => {
   console.log(req.body);
