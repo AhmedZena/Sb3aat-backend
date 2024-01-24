@@ -1,5 +1,3 @@
-// serviceControl.js
-const { parse } = require("dotenv");
 const coursesModel = require("./../model/courses");
 
 const createCourses = (req, res) => {
@@ -23,7 +21,7 @@ const createCourses = (req, res) => {
     CourseMaterial
   );
 
-  try {
+  // try {
     const newCourses = new coursesModel({
       FreelancerId,
       Title,
@@ -42,20 +40,18 @@ const createCourses = (req, res) => {
       .catch((error) => {
         res
           .status(500)
-          .json({ error: "Failed to create Courses", details: error });
+          .json({ error: "Failed to create Courses", details: error.message });
       });
-  } catch (error) {
-    res.status(400).json({ error: "Invalid request", details: error });
-  }
+  // } catch (error) {
+  //   res.status(400).json({ error: "Invalid request", details: error });
+  // }
 };
 
-// get all service...
+// get all ...
 const getCourses = (req, res) => {
-  if (!req.body) {
-    return res.status(400).json({ error: "Empty request body" });
-  }
 
-  serviceModel
+
+  coursesModel
     .find()
     .then((courses) => {
       res.status(200).json(courses);
@@ -94,8 +90,9 @@ const updateCourses = (req, res) => {
   }
 
   coursesModel
-    .findOneAndUpdate(
-      { coursesId: coursesId },
+    .findByIdAndUpdate(
+      req.params.id,
+      
       { $set: updatedFields },
       { new: true }
     )
@@ -109,19 +106,28 @@ const updateCourses = (req, res) => {
     });
 };
 //delete courses :-
-const deleteCourses = (req, res) => {
-  let coursesId = parseInt(req.params.id);
+const deleteCourById = async (req, res) => {
+  let courseId = req.params.id;
 
-  coursesModel.findOneAndDelete({ _id: coursesId }, (error, result) => {
-    if (error) {
-      console.error("Error deleting courses:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else if (!result) {
-      res.status(404).json({ error: "courses not found" });
+  try {
+    const result = await coursesModel.findByIdAndDelete(courseId);
+console.log(result)
+    if (!result) {
+      res.status(404).json({ error: "Course not found" });
     } else {
-      res.status(200).json({ message: "courses deleted successfully" });
+      res.status(200).json({ message: "Course deleted successfully" });
     }
-  });
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+let deleteAllCourses = (req, res) => {
+  coursesModel.deleteMany()
+    .then(() => res.json("All courses deleted successfully"))
+    .catch((err) => res.status(400).json(`Error: ${err}`));
 };
 
 module.exports = {
@@ -129,5 +135,6 @@ module.exports = {
   getCourses,
   updateCourses,
   getCoursesById,
-  deleteCourses,
+  deleteCourById,
+  deleteAllCourses
 };
