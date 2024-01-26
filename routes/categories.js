@@ -16,7 +16,7 @@ let {
   updateCategory,
   deleteCategory,
   deleteAllCategories,
-} = require("../controller/categories");
+} = require("../controllers/categories");
 
 //  one line
 router

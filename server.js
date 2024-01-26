@@ -13,6 +13,10 @@ let errorMiddleWare = require("./middlewares/errorMiddleware");
 const dbConnect = require("./config/DbConnect");
 
 // importing routes
+
+//auth
+const authRoutes = require("./routes/authRoute");
+
 // category
 const categoryRoutes = require("./routes/categories");
 
@@ -21,6 +25,12 @@ const serviceRoutes = require("./routes/serviceRoute");
 
 // courses
 const coursesRoutes = require("./routes/courses");
+
+// orders
+const orderRoutes = require("./routes/orderRoute");
+
+// reviews
+const reviewsRoutes = require("./routes/reviewsRoutes");
 
 // dontenv config
 require("dotenv").config({ path: "./.config.env" });
@@ -44,6 +54,10 @@ app.get("/", (req, res) => {
 });
 
 // Routes
+
+// auth
+app.use("/api/auth", authRoutes);
+
 // category
 app.use("/api/categories", categoryRoutes);
 
@@ -52,6 +66,12 @@ app.use("/api/services", serviceRoutes);
 
 // courses
 app.use("/api/courses", coursesRoutes);
+
+// orders
+app.use("/api/orders", orderRoutes);
+
+// reviews
+app.use("/api/reviews", reviewsRoutes);
 
 // Handling unhandled routes
 app.all("*", (req, res, next) => {
@@ -63,10 +83,6 @@ app.use(errorMiddleWare);
 
 // Listening to port
 let port = process.env.PORT || 8000;
-// app.listen(port, () => {
-//   console.log(`Listening to port ${port}...`);
-// });
-
 const server = app.listen(port, () => {
   console.log(`Listening to port ${port}...`);
 });

@@ -6,7 +6,7 @@ const {
   updateService,
   getServiceById,
   deleteService,
-} = require("../controller/serviceControl");
+} = require("../controllers/serviceControl");
 
 // Create a new service
 Router.post("/", createService);
