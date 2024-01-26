@@ -91,9 +91,9 @@ const freelancerVerfied = async (req, res, next) => {
   }
 };
 
-module.exports = { 
-  verifyToken, 
-  adminVerfied ,
+module.exports = {
+  verifyToken,
+  adminVerfied,
   clientVerfied,
-  freelancerVerfied 
+  freelancerVerfied,
 };

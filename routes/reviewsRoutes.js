@@ -5,6 +5,7 @@ const {
   getReviewsByServiceId,
   createNewReview,
   updateReview,
+  deleteReview,
 } = require("../controllers/reviewsApi");
 
 // get all reviews
@@ -16,6 +17,8 @@ router.get("/:service_id", getReviewsByServiceId);
 router.post("/", createNewReview);
 // update review
 router.put("/", updateReview);
+// delete review
+router.delete("/:id", deleteReview);
 
 // Export the router
 module.exports = router;

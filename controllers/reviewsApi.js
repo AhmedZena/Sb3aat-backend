@@ -65,7 +65,8 @@ const updateReview = (req, res) => {
     .findOneAndUpdate(
       { reviewID: reviewID, serviceID: serviceID, clientID: clientID },
       { rating: rating, comment: comment },
-      { runValidators: true }
+      { runValidators: true },
+      { new: true }
     )
     .then((updatedReview) => {
       if (!updatedReview) {
@@ -79,9 +80,33 @@ const updateReview = (req, res) => {
         .json({ error: "Internal Server Error", details: error.message });
     });
 };
+
+// delete review
+const deleteReview = (req, res) => {
+  let reviewID = req.params.id;
+  console.log(reviewID);
+  if (!reviewID) {
+    return res.status(400).json({ error: "Missing required parameters" });
+  }
+  console.log(review.findById(reviewID).then((review) => console.log(review)));
+  review
+    .findOneAndDelete({ reviewID })
+    .then((deletedReview) => {
+      if (!deletedReview) {
+        return res.status(404).json({ error: "Review not found" });
+      }
+      res.status(200).json(deletedReview);
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error: "Internal Server Error", details: error.message });
+    });
+};
 module.exports = {
   getReviews,
   getReviewsByServiceId,
   createNewReview,
   updateReview,
+  deleteReview,
 };

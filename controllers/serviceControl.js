@@ -84,7 +84,7 @@ const getServiceById = (req, res) => {
 // update service :-
 
 const updateService = (req, res) => {
-  const serviceId = parseInt(req.params.id);
+  const serviceId = req.params.id;
   const updatedFields = req.body;
 
   if (!serviceId || Object.keys(updatedFields).length === 0) {
@@ -95,7 +95,7 @@ const updateService = (req, res) => {
 
   serviceModel
     .findOneAndUpdate(
-      { serviceId: serviceId },
+      { _id: serviceId },
       { $set: updatedFields },
       { new: true }
     )
@@ -110,18 +110,18 @@ const updateService = (req, res) => {
 };
 //delete serivce :-
 const deleteService = (req, res) => {
-  let serviceId = parseInt(req.params.id);
+  let serviceId = req.params.id;
 
-  serviceModel.findOneAndDelete({ _id: serviceId }, (error, result) => {
-    if (error) {
-      console.error("Error deleting service:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    } else if (!result) {
-      res.status(404).json({ error: "Service not found" });
-    } else {
-      res.status(200).json({ message: "Service deleted successfully" });
-    }
-  });
+  serviceModel
+    .findOneAndDelete({ _id: serviceId })
+    .then((service) => {
+      res.status(200).json("service deleted successfully");
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error: "Failed to delete service", details: error });
+    });
 };
 
 module.exports = {
