@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
 
 const serviceSchema = mongoose.Schema({
-  serviceId: Number,
-  freelancerId: Number,
-  categoryID: Number,
+  freelancerId: mongoose.Schema.Types.ObjectId,
+  categoryID: mongoose.Schema.Types.ObjectId,
   title: String,
   description: String,
   price: Number,
-  deliveryTime: Number,
+  deliveryTime: String,
   serviceImage: String,
 });
 

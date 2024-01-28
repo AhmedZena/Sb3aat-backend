@@ -32,6 +32,12 @@ const orderRoutes = require("./routes/orderRoute");
 // reviews
 const reviewsRoutes = require("./routes/reviewsRoutes");
 
+// notifcation
+const notificationRoutes = require("./routes/notification");
+
+// payment
+const paymentRoutes = require("./routes/paymentRoute");
+
 // dontenv config
 require("dotenv").config({ path: "./.config.env" });
 console.log(process.env.PORT);
@@ -72,6 +78,12 @@ app.use("/api/orders", orderRoutes);
 
 // reviews
 app.use("/api/reviews", reviewsRoutes);
+
+// notification
+app.use("/api/notifications", notificationRoutes);
+
+// payment
+app.use("/api/payments", paymentRoutes);
 
 // Handling unhandled routes
 app.all("*", (req, res, next) => {
