@@ -101,10 +101,11 @@ app.all("*", (req, res, next) => {
 //Global Error handling middleware
 app.use(errorMiddleWare);
 
-// configure cors
 const corsOptions = {
-  //   all,
-  origin: "https://sb3aat.onrender.com",
+  origin: "*", // Allows all origins
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Optionally, you can specify the allowed methods
+  credentials: true, // Optionally, you can enable credentials
+  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
 // cors
