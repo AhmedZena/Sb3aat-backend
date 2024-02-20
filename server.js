@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
+const path = require("path");
 
 // import util ApiError
 let ApiError = require("./util/apiError");
@@ -60,7 +61,7 @@ app.use(express.json());
 
 // Importing routes
 app.get("/", (req, res) => {
-  res.send("Welcome to Sb3aat Platform");
+  res.sendFile(path.join(__dirname, "./docs/api-documentation.html"));
 });
 
 // Routes
@@ -100,8 +101,17 @@ app.all("*", (req, res, next) => {
 //Global Error handling middleware
 app.use(errorMiddleWare);
 
+// configure cors
+const corsOptions = {
+  //   all,
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+
+  optionsSuccessStatus: 200,
+};
+
 // cors
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Listening to port
 let port = process.env.PORT || 8000;

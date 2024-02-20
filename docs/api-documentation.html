@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>API Documentation</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                line-height: 1.6;
+                margin: 0;
+                padding: 20px;
+            }
+
+            .container {
+                max-width: 800px;
+                margin: auto;
+                background: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            h1,
+            h2 {
+                color: #333;
+            }
+
+            h1 {
+                text-align: center;
+            }
+
+            .api-endpoint {
+                background-color: #e3f2fd;
+                padding: 10px;
+                border-left: 3px solid #2196f3;
+                margin: 20px 0;
+                border-radius: 4px;
+            }
+
+            .api-description,
+            .api-method,
+            .api-response {
+                margin-bottom: 10px;
+            }
+
+            .api-method {
+                font-style: italic;
+                color: #666;
+            }
+
+            pre {
+                background-color: #eee;
+                padding: 10px;
+                border-radius: 4px;
+                overflow: auto;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Sb3aat Platform API Documentation</h1>
+
+        <!-- auth -->
+        <div class="container">
+            <h1>Auth API Documentation</h1>
+
+            <!-- Register User -->
+            <div class="api-endpoint">
+                <h2>Register User</h2>
+                <div class="api-method">Method: POST</div>
+                <div class="api-description">Registers a new user in the system.</div>
+                <div>Endpoint: <code>/api/auth/register</code></div>
+                <h3>Request Body:</h3>
+                <pre>{
+      "username": "String (required, min length: 2, max length: 50)",
+      "email": "String (required, email format, min length: 5, max length: 50)",
+      "password": "String (required, min length: 8)",
+      "role": "String (optional, values: 'user', 'admin', 'freelancer')"
+    }</pre>
+                <h3>Response:</h3>
+                <pre>{
+      "success": true,
+      "data": { /* User data */ }
+      // Or appropriate error message
+    }</pre>
+            </div>
+
+            <!-- Login User -->
+            <div class="api-endpoint">
+                <h2>Login User</h2>
+                <div class="api-method">Method: POST</div>
+                <div class="api-description">Authenticates a user and returns a token.</div>
+                <div>Endpoint: <code>/api/auth/login</code></div>
+                <h3>Request Body:</h3>
+                <pre>{
+      "email": "String (required, email format, min length: 5, max length: 50)",
+      "password": "String (required, min length: 8)"
+    }</pre>
+                <h3>Response:</h3>
+                <pre>{
+      "token": "String (Auth Token)"
+      // Or appropriate error message
+    }</pre>
+            </div>
+
+            <!-- Get All Users -->
+            <div class="api-endpoint">
+                <h2>Get All Users</h2>
+                <div class="api-method">Method: GET</div>
+                <div class="api-description">Retrieves a list of all users.</div>
+                <div>Endpoint: <code>/api/auth/Users</code></div>
+                <h3>Response:</h3>
+                <pre>[
+      { /* User 1 data */ },
+      { /* User 2 data */ },
+      // ...
+    ]</pre>
+            </div>
+
+        </div>
+
+        <!-- categories -->
+        <div class="container">
+            <h1>Categories API Documentation</h1>
+
+            <!-- Get All Categories -->
+            <div class="api-endpoint">
+                <h2>Get All Categories</h2>
+                <div class="api-method">Method: GET</div>
+                <div class="api-description">Retrieves all categories.</div>
+                <div>Endpoint: <code>/api/categories/</code></div>
+                <h3>Response:</h3>
+                <pre>[
+          { /* Category 1 data */ },
+          { /* Category 2 data */ },
+          // ...
+        ]</pre>
+            </div>
+
+            <!-- Add a New Category -->
+            <div class="api-endpoint">
+                <h2>Add a New Category</h2>
+                <div class="api-method">Method: POST</div>
+                <div class="api-description">Creates a new category.</div>
+                <div>Endpoint: <code>/api/categories/</code></div>
+                <h3>Request Body:</h3>
+                <pre>{
+          "name": "String (required, unique)",
+          "slug": "String (required, unique, lowercase)",
+          "description": "String (required)",
+          "catImgSrc": "String (required, URL format)"
+        }</pre>
+                <h3>Response:</h3>
+                <pre>{
+          "success": true,
+          "data": { /* New category data */ }
+          // Or appropriate error message
+        }</pre>
+            </div>
+
+            <!-- Update Category -->
+            <div class="api-endpoint">
+                <h2>Update Category</h2>
+                <div class="api-method">Method: PATCH</div>
+                <div class="api-description">Updates an existing category by ID.</div>
+                <div>Endpoint: <code>/api/categories/:id</code></div>
+                <h3>Request Body:</h3>
+                <pre>{
+          // Fields to update
+        }</pre>
+                <h3>Response:</h3>
+                <pre>{
+          "success": true,
+          "data": { /* Updated category data */ }
+          // Or appropriate error message
+        }</pre>
+            </div>
+
+            <!-- Delete Category -->
+            <div class="api-endpoint">
+                <h2>Delete Category</h2>
+                <div class="api-method">Method: DELETE</div>
+                <div class="api-description">Deletes a category by ID.</div>
+                <div>Endpoint: <code>/api/categories/:id</code></div>
+                <h3>Response:</h3>
+                <pre>{
+          "success": true,
+          "message": "Category deleted successfully"
+          // Or appropriate error message
+        }</pre>
+            </div>
+
+            <!-- Delete All Categories -->
+            <div class="api-endpoint">
+                <h2>Delete All Categories</h2>
+                <div class="api-method">Method: DELETE</div>
+                <div class="api-description">Deletes all categories.</div>
+                <div>Endpoint: <code>/api/categories/</code></div>
+                <h3>Response:</h3>
+                <pre>{
+          "success": true,
+          "message": "All categories deleted successfully"
+          // Or appropriate error message
+        }</pre>
+            </div>
+
+        </div>
+
+        <!-- sub categories -->
+        <div class="container">
+            <h1>Sub Categories API Documentation</h1>
+
+            <!-- Get All Sub Categories -->
+            <div class="api-endpoint">
+                <h2>Get All Sub Categories</h2>
+                <div class="api-method">Method: GET</div>
+                <div class="api-description">Retrieves all subcategories.</div>
+                <div>Endpoint: <code>/api/subCategories/</code></div>
+                <h3>Response:</h3>
+                <pre>[
+          { /* Sub Category 1 data */ },
+          { /* Sub Category 2 data */ },
+          // ...
+        ]</pre>
+            </div>
+
+            <!-- Add a New Sub Category -->
+            <div class="api-endpoint">
+                <h2>Add a New Sub Category</h2>
+                <div class="api-method">Method: POST</div>
+                <div class="api-description">Creates a new subcategory.</div>
+                <div>Endpoint: <code>/api/subCategories/</code></div>
+                <h3>Request Body:</h3>
+                <pre>{
+          "name": "String (required, unique)",
+          "slug": "String (required, unique, lowercase)",
+          "description": "String (required)",
+          "categoryId": "ObjectId (required, reference to category)",
+          "subCatImgSrc": "String (required, URL format)"
+        }</pre>
+                <h3>Response:</h3>
+                <pre>{
+          "success": true,
+          "data": { /* New subcategory data */ }
+          // Or appropriate error message
+        }</pre>
+            </div>
+
+            <!-- Update Sub Category -->
+            <div class="api-endpoint">
+                <h2>Update Sub Category</h2>
+                <div class="api-method">Method: PATCH</div>
+                <div class="api-description">Updates an existing subcategory by ID.</div>
+                <div>Endpoint: <code>/api/subCategories/:id</code></div>
+                <h3>Request Body:</h3>
+                <pre>{
+          // Fields to update
+        }</pre>
+                <h3>Response:</h3>
+                <pre>{
+          "success": true,
+          "data": { /* Updated subcategory data */ }
+          // Or appropriate error message
+        }</pre>
+            </div>
+
+            <!-- Delete Sub Category -->
+            <div class="api-endpoint">
+                <h2>Delete Sub Category</h2>
+                <div class="api-method">Method: DELETE</div>
+                <div class="api-description">Deletes a subcategory by ID.</div>
+                <div>Endpoint: <code>/api/subCategories/:id</code></div>
+                <h3>Response:</h3>
+                <pre>{
+          "success": true,
+          "message": "Subcategory deleted successfully"
+          // Or appropriate error message
+        }</pre>
+            </div>
+
+            <!-- Delete All Sub Categories -->
+            <div class="api-endpoint">
+                <h2>Delete All Sub Categories</h2>
+                <div class="api-method">Method: DELETE</div>
+                <div class="api-description">Deletes all subcategories.</div>
+                <div>Endpoint: <code>/api/subCategories/</code></div>
+                <h3>Response:</h3>
+                <pre>{
+          "success": true,
+          "message": "All subcategories deleted successfully"
+          // Or appropriate error message
+        }</pre>
+            </div>
+
+        </div>
+
+        <div class="api-section">
+            <h2>Service Routes</h2>
+            <!-- Add service endpoints information -->
+        </div>
+
+        <div class="api-section">
+            <h2>Courses Routes</h2>
+            <!-- Add courses endpoints information -->
+        </div>
+
+        <div class="api-section">
+            <h2>Orders Routes</h2>
+            <!-- Add orders endpoints information -->
+        </div>
+
+        <div class="api-section">
+            <h2>Reviews Routes</h2>
+            <!-- Add reviews endpoints information -->
+        </div>
+
+        <div class="api-section">
+            <h2>Notification Routes</h2>
+            <!-- Add notification endpoints information -->
+        </div>
+
+        <div class="api-section">
+            <h2>Payment Routes</h2>
+            <!-- Add payment endpoints information -->
+        </div>
+
+    </body>
+
+</html>
