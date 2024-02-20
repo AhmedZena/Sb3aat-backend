@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const cors = require("cors");
 
 // import util ApiError
 let ApiError = require("./util/apiError");
@@ -98,6 +99,9 @@ app.all("*", (req, res, next) => {
 
 //Global Error handling middleware
 app.use(errorMiddleWare);
+
+// cors
+app.use(cors());
 
 // Listening to port
 let port = process.env.PORT || 8000;
