@@ -104,10 +104,7 @@ app.use(errorMiddleWare);
 // configure cors
 const corsOptions = {
   //   all,
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-
-  optionsSuccessStatus: 200,
+  origin: "https://sb3aat.onrender.com",
 };
 
 // cors

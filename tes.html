@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Services Display</title>
+        <style>
+            .service {
+                border: 1px solid #ddd;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div id="services"></div>
+
+        <script>
+            const displayServices = ( services ) => {
+                const servicesContainer = document.getElementById( 'services' );
+                servicesContainer.innerHTML = '';
+                services.forEach( service => {
+                    const serviceDiv = document.createElement( 'div' );
+                    serviceDiv.className = 'service';
+                    serviceDiv.innerHTML = `
+                <h3>${ service.title }</h3>
+                <p><strong>Description:</strong> ${ service.description }</p>
+                <p><strong>Price:</strong> $${ service.price }</p>
+                <p><strong>Delivery Time:</strong> ${ service.deliveryTime }</p>
+            `;
+                    servicesContainer.appendChild( serviceDiv );
+                } );
+            };
+
+            const requestOptions = {
+                method: "GET",
+                redirect: "follow"
+            };
+
+            fetch( "https://sb3aat.onrender.com/api/services", requestOptions )
+                .then( ( response ) => response.json() ) // Parse JSON from the response
+                .then( ( data ) => displayServices( data ) ) // Call displayServices with parsed data
+                .catch( ( error ) => console.error( error ) );
+        </script>
+
+    </body>
+
+</html>
