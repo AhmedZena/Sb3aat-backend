@@ -20,6 +20,9 @@ const authRoutes = require("./routes/authRoute");
 // category
 const categoryRoutes = require("./routes/categories");
 
+// sub category
+const subCategoryRoutes = require("./routes/subCategories");
+
 // service
 const serviceRoutes = require("./routes/serviceRoute");
 
@@ -56,7 +59,7 @@ app.use(express.json());
 
 // Importing routes
 app.get("/", (req, res) => {
-  res.send("Welcome to my E-commerce API");
+  res.send("Welcome to Sb3aat Platform");
 });
 
 // Routes
@@ -66,6 +69,9 @@ app.use("/api/auth", authRoutes);
 
 // category
 app.use("/api/categories", categoryRoutes);
+
+// sub category
+app.use("/api/subCategories", subCategoryRoutes);
 
 // service
 app.use("/api/services", serviceRoutes);
