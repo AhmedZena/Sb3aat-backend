@@ -35,7 +35,11 @@
 
             const requestOptions = {
                 method: "GET",
-                redirect: "follow"
+                redirect: "follow",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+
             };
 
             fetch( "https://sb3aat.onrender.com/api/services", requestOptions )

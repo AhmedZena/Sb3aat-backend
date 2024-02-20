@@ -5,6 +5,16 @@ const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
 
+const corsOptions = {
+  origin: "*", // Allows all origins
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Optionally, you can specify the allowed methods
+  credentials: true, // Optionally, you can enable credentials
+  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+// cors
+app.use(cors(corsOptions));
+
 // import util ApiError
 let ApiError = require("./util/apiError");
 
@@ -100,16 +110,6 @@ app.all("*", (req, res, next) => {
 
 //Global Error handling middleware
 app.use(errorMiddleWare);
-
-const corsOptions = {
-  origin: "*", // Allows all origins
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Optionally, you can specify the allowed methods
-  credentials: true, // Optionally, you can enable credentials
-  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-
-// cors
-app.use(cors(corsOptions));
 
 // Listening to port
 let port = process.env.PORT || 8000;
