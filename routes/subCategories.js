@@ -16,6 +16,7 @@ let {
   updateSubCategory,
   deleteSubCategory,
   deleteAllSubCategories,
+  getAllSubByCategoryId
 } = require("../controllers/subCategories");
 
 //  one line
@@ -31,6 +32,6 @@ router
   .patch(updateSubCategory)
   .delete(deleteSubCategory);
 
-// router.route("/:id").get(
+  router.route("/:categoryId").get(getAllSubByCategoryId);
 
 module.exports = router;
