@@ -39,11 +39,11 @@ const subCategorySchema = new Schema(
 
 // check if subCategory name is unique
 subCategorySchema.path("name").validate(async (value) => {
-  const nameCount = await mongoose.models.subCategory.countDocuments({
+  const nameCount = await mongoose.models.subCategories.countDocuments({
     name: value,
   });
   return !nameCount;
-}, "subCategory name already exists");
+}, "subCategorey name already exists");
 
 const subCategory = mongoose.model("subCategories", subCategorySchema);
 
