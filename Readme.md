@@ -2,8 +2,7 @@
 
 ## Introduction
 
-- Sb3aat Platform is a freelancing platform that connects clients with freelancers. It allows clients to post jobs and freelancers to bid on them. The platform also offers a range of courses and services for users to learn and grow their skills.
-- This is the documentation for the Sb3aat Platform API. The API provides a set of endpoints for managing users, services, orders, payments, and more. It is designed to be used by the Sb3aat Platform web and mobile applications.
+- Sb3aat Platform is a freelancing platform that connects clients with freelancers. It allows clients to order services and courses, and freelancers to offer their services and courses. The platform also supports payments, reviews, and notifications. The Sb3aat Platform API provides a set of endpoints for managing users, services, orders, payments, and more. It is designed to be used by the Sb3aat Platform web Application.
 
 ## Getting Started
 
