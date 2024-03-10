@@ -45,6 +45,6 @@ subCategorySchema.path("name").validate(async (value) => {
   return !nameCount;
 }, "subCategory name already exists");
 
-const subCategory = mongoose.model("subCategory", subCategorySchema);
+const subCategory = mongoose.model("subCategories", subCategorySchema);
 
 module.exports = subCategory;
