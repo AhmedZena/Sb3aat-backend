@@ -56,7 +56,7 @@ let getAllSubByCategoryId = asyncHandler(async (req, res, next) => {
 });
 
 //  Get subcategories by category id
-let getSubByCategoriesByCategoryId = (req, res) => {
+let getAllSubByCategoryId = (req, res) => {
   SubCategories.find({ categoryId: req.params.id })
     .then((subCategories) => res.json(subCategories))
     .catch((err) => res.status(400).json(`Error: ${err}`));
