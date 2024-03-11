@@ -34,6 +34,6 @@ router
   .delete(deleteSubCategory);
 
 // get subcategories by category id
-router.route("/category/:id").get(getSubByCategoriesByCategoryId);
+router.route("/category/:id").get(getAllSubByCategoryId);
 
 module.exports = router;
