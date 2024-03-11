@@ -1,13 +1,5 @@
 let express = require("express");
 let router = express.Router();
-// let SubCategories = require("../models/subCategories");
-
-// let {
-//   getCategoryByIdValidator,
-//   createCategoryValidator,
-//   updateCategoryValidator,
-//   deleteCategoryValidator,
-// } = require("../util/validators/categoryValidator");
 
 let {
   getAllSubCategories,
@@ -16,24 +8,21 @@ let {
   updateSubCategory,
   deleteSubCategory,
   deleteAllSubCategories,
-  getAllSubByCategoryId,
-  getSubByCategoriesByCategoryId,
+  getAllSubByCategoryId, // Include this function from your controller
 } = require("../controllers/subCategories");
 
-//  one line
-router
-  .route("/")
+// Define routes
+router.route("/")
   .get(getAllSubCategories)
   .post(addSubCategory)
   .delete(deleteAllSubCategories);
 
-router
-  .route("/:id")
+router.route("/:id")
   .get(getSubCategoryById)
   .patch(updateSubCategory)
   .delete(deleteSubCategory);
 
-// get subcategories by category id
+// Route to get all subcategories by category id
 router.route("/category/:id").get(getAllSubByCategoryId);
 
 module.exports = router;
