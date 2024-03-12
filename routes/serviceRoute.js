@@ -24,11 +24,9 @@ Router.get("/", getServices);
 Router.get("/:id", getServiceById);
 // Update a service
 Router.patch("/:id", freelancerVerfied, updateService);
-// Delete a service
-// Router.delete("/:id",freelancerVerfied, deleteService);
-// both admin and freelancer can delete service
-// Router.delete("/:id", freelancerVerfied, deleteService);
+// delete a service
 Router.delete("/:id", adminOrFreelancerVerfied, deleteService);
-Router.get("/category/:id", getServicesByCategoryId); // Define the route here
+// Get services by category
+Router.get("/category/:categoryId", getServicesByCategoryId);
 
 module.exports = Router;

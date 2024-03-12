@@ -4,25 +4,8 @@ const serviceModel = require("../models/serviceModel");
 
 const createService = (req, res) => {
   console.log(req.body);
-  const {
-    freelancerId,
-    categoryID,
-    title,
-    description,
-    price,
-    deliveryTime,
-    serviceImage,
-  } = req.body;
-  console.log(
-    freelancerId,
-    categoryID,
-    title,
-    description,
-    price,
-    deliveryTime,
-    serviceImage
-  );
-
+  const { freelancerId, categoryID, title, description, price, deliveryTime, serviceImage } =
+    req.body;
   try {
     const newService = new serviceModel({
       freelancerId,
@@ -40,9 +23,7 @@ const createService = (req, res) => {
         res.status(201).json(savedService);
       })
       .catch((error) => {
-        res
-          .status(500)
-          .json({ error: "Failed to create service", details: error });
+        res.status(500).json({ error: "Failed to create service", details: error });
       });
   } catch (error) {
     res.status(400).json({ error: "Invalid request", details: error });
@@ -61,18 +42,16 @@ const getServices = (req, res) => {
       res.status(200).json(services);
     })
     .catch((error) => {
-      res
-        .status(500)
-        .json({ error: "Failed to retrieve services", details: error });
+      res.status(500).json({ error: "Failed to retrieve services", details: error });
     });
 };
-//get all service by category id :-
+//get all service by subcategory id :-
 let getServicesByCategoryId = (req, res) => {
   serviceModel
     .find({ categoryID: req.params.id })
     .then((services) => res.json(services))
     .catch((err) => res.status(400).json(`Error: ${err}`));
-} 
+};
 //get service by id :-
 const getServiceById = (req, res) => {
   let serviceId = req.params.serviceId;
@@ -95,24 +74,16 @@ const updateService = (req, res) => {
   const updatedFields = req.body;
 
   if (!serviceId || Object.keys(updatedFields).length === 0) {
-    return res
-      .status(400)
-      .json({ error: "Invalid request. Missing id or updatedFields." });
+    return res.status(400).json({ error: "Invalid request. Missing id or updatedFields." });
   }
 
   serviceModel
-    .findOneAndUpdate(
-      { _id: serviceId },
-      { $set: updatedFields },
-      { new: true }
-    )
+    .findOneAndUpdate({ _id: serviceId }, { $set: updatedFields }, { new: true })
     .then((updatedService) => {
       res.status(200).json(updatedService);
     })
     .catch((error) => {
-      res
-        .status(500)
-        .json({ error: "Failed to update service", details: error });
+      res.status(500).json({ error: "Failed to update service", details: error });
     });
 };
 //delete serivce :-
@@ -125,9 +96,7 @@ const deleteService = (req, res) => {
       res.status(200).json("service deleted successfully");
     })
     .catch((error) => {
-      res
-        .status(500)
-        .json({ error: "Failed to delete service", details: error });
+      res.status(500).json({ error: "Failed to delete service", details: error });
     });
 };
 
@@ -137,5 +106,5 @@ module.exports = {
   updateService,
   getServiceById,
   deleteService,
-  getServicesByCategoryId
+  getServicesByCategoryId,
 };

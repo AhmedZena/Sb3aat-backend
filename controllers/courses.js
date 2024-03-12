@@ -1,35 +1,17 @@
 const coursesModel = require("../models/courses");
 
 const createCourses = (req, res) => {
-  console.log(req.body);
-  const {
-    FreelancerId,
-    Title,
-    Description,
-    CategoryID,
-    Price,
-    Duration,
-    CourseMaterial,
-  } = req.body;
-  console.log(
-    FreelancerId,
-    Title,
-    Description,
-    CategoryID,
-    Price,
-    Duration,
-    CourseMaterial
-  );
+  const { freelancerId, title, description, categoryId, price, duration, courseMaterial } =
+    req.body;
 
-  // try {
   const newCourses = new coursesModel({
-    FreelancerId,
-    Title,
-    Description,
-    CategoryID,
-    Price,
-    Duration,
-    CourseMaterial,
+    freelancerId,
+    title,
+    description,
+    categoryId,
+    price,
+    duration,
+    courseMaterial,
   });
 
   newCourses
@@ -38,16 +20,10 @@ const createCourses = (req, res) => {
       res.status(201).json(savedCourses);
     })
     .catch((error) => {
-      res
-        .status(500)
-        .json({ error: "Failed to create Courses", details: error.message });
+      res.status(500).json({ error: "Failed to create Courses", details: error.message });
     });
-  // } catch (error) {
-  //   res.status(400).json({ error: "Invalid request", details: error });
-  // }
 };
-
-// get all ...
+//get all courses
 const getCourses = (req, res) => {
   coursesModel
     .find()
@@ -55,68 +31,70 @@ const getCourses = (req, res) => {
       res.status(200).json(courses);
     })
     .catch((error) => {
-      res
-        .status(500)
-        .json({ error: "Failed to retrieve courses", details: error });
+      res.status(500).json({ error: "Failed to retrieve courses", details: error });
     });
 };
-//get courses by categoryID:-
-const getCoursesByCategoryId = (req, res) => {
-  coursesModel
-    .find({ CategoryID: req.params.id })
-    .then((courses) => res.json(courses))
-    .catch((err) => res.status(400).json(`Error: ${err}`));
-};
-//get courses by id :-
-const getCoursesById = (req, res) => {
-  let coursesId = req.params.coursesId;
-  //checking for valid id or not
-  if (!coursesId) {
-    coursesModel.find().then((courses) => {
+
+//get courses by subcategory id
+const getCoursesByCategoryId = async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const courses = await coursesModel.find({ categoryId });
+
+    if (!courses || courses.length === 0) {
+      res.status(404).json({ error: "Courses not found" });
+    } else {
       res.status(200).json(courses);
-    });
-  } else {
-    coursesModel.findOne({ _id: coursesId }).then((courses) => {
-      res.status(200).json(courses);
-    });
+    }
+  } catch (error) {
+    console.error("Error getting courses by category ID:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-// update courses :-
+//get courses by id
+const getCoursesById = async (req, res) => {
+  try {
+    const coursesId = req.params.id;
+    const courses = await coursesModel.findById(coursesId);
 
-const updateCourses = (req, res) => {
-  const coursesId = parseInt(req.params.id);
+    if (!courses) {
+      res.status(404).json({ error: "Course not found" });
+    } else {
+      res.status(200).json(courses);
+    }
+  } catch (error) {
+    console.error("Error getting course by ID:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// update courses
+const updateCourses = async (req, res) => {
+  const courseId = req.params.id;
   const updatedFields = req.body;
 
-  if (!coursesId || Object.keys(updatedFields).length === 0) {
-    return res
-      .status(400)
-      .json({ error: "Invalid request. Missing id or updatedFields." });
-  }
+  try {
+    const updatedCourses = await coursesModel.findByIdAndUpdate(courseId, updatedFields, { new: true });
 
-  coursesModel
-    .findByIdAndUpdate(
-      req.params.id,
-
-      { $set: updatedFields },
-      { new: true }
-    )
-    .then((updatedCourses) => {
+    if (!updatedCourses) {
+      res.status(404).json({ error: "Course not found" });
+    } else {
       res.status(200).json(updatedCourses);
-    })
-    .catch((error) => {
-      res
-        .status(500)
-        .json({ error: "Failed to update courses", details: error });
-    });
+    }
+  } catch (error) {
+    console.error("Error updating course:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
-//delete courses :-
+
+// delete course
 const deleteCourById = async (req, res) => {
-  let courseId = req.params.id;
+  const courseId = req.params.id;
 
   try {
     const result = await coursesModel.findByIdAndDelete(courseId);
-    console.log(result);
+    
     if (!result) {
       res.status(404).json({ error: "Course not found" });
     } else {
@@ -128,11 +106,14 @@ const deleteCourById = async (req, res) => {
   }
 };
 
-let deleteAllCourses = (req, res) => {
-  coursesModel
-    .deleteMany()
-    .then(() => res.json("All courses deleted successfully"))
-    .catch((err) => res.status(400).json(`Error: ${err}`));
+// delete all courses
+const deleteAllCourses = async (req, res) => {
+  try {
+    await coursesModel.deleteMany();
+    res.json("All courses deleted successfully");
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 module.exports = {
