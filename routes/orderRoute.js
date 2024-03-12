@@ -23,7 +23,7 @@ const {
 router.post("/", createOrder);
 
 // Orders by Client
-router.get("/client/:clientId", clientVerfied, getOrderByClient);
+router.get("/client/:clientId", getOrderByClient);
 
 // Orders by Freelancer
 router.get(
