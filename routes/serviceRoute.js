@@ -6,6 +6,7 @@ const {
   updateService,
   getServiceById,
   deleteService,
+  getServicesByCategoryId // Import the function here
 } = require("../controllers/serviceControl");
 
 let {
@@ -28,7 +29,6 @@ Router.patch("/:id", freelancerVerfied, updateService);
 // both admin and freelancer can delete service
 // Router.delete("/:id", freelancerVerfied, deleteService);
 Router.delete("/:id", adminOrFreelancerVerfied, deleteService);
-Router.get("/category/:id", getServicesByCategoryId);
-
+Router.get("/category/:id", getServicesByCategoryId); // Define the route here
 
 module.exports = Router;
