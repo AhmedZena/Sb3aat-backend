@@ -66,6 +66,13 @@ const getServices = (req, res) => {
         .json({ error: "Failed to retrieve services", details: error });
     });
 };
+//get all service by category id :-
+let getServicesByCategoryId = (req, res) => {
+  serviceModel
+    .find({ categoryID: req.params.id })
+    .then((services) => res.json(services))
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+} 
 //get service by id :-
 const getServiceById = (req, res) => {
   let serviceId = req.params.serviceId;
@@ -130,4 +137,5 @@ module.exports = {
   updateService,
   getServiceById,
   deleteService,
+  getServicesByCategoryId
 };
