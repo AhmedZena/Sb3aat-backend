@@ -12,17 +12,19 @@ let {
 } = require("../controllers/subCategories");
 
 // Define routes
-router.route("/")
+router
+  .route("/")
   .get(getAllSubCategories)
   .post(addSubCategory)
   .delete(deleteAllSubCategories);
 
-router.route("/:id")
+router
+  .route("/:id")
   .get(getSubCategoryById)
   .patch(updateSubCategory)
   .delete(deleteSubCategory);
 
 // Route to get all subcategories by category id
-router.route("/category/:id").get(getAllSubByCategoryId);
+router.route("/category/:categoryId").get(getAllSubByCategoryId);
 
 module.exports = router;

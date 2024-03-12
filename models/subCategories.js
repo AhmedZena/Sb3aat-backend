@@ -34,7 +34,8 @@ const subCategorySchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
+  { collection: "subCategories" }
 );
 
 // check if subCategory name is unique

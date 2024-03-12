@@ -42,12 +42,13 @@ let getSubCategoryById = asyncHandler(async (req, res, next) => {
     next(new ApiError("category not found", 404));
   }
 });
-
 // Get all subcategories by category ID
 let getAllSubByCategoryId = asyncHandler(async (req, res, next) => {
+  console.log(req.params.categoryId);
   let subCategories = await SubCategories.find({
     categoryId: req.params.categoryId,
   });
+
   console.log(subCategories);
   if (subCategories) {
     res.status(200).json({ subCategories });
@@ -55,6 +56,13 @@ let getAllSubByCategoryId = asyncHandler(async (req, res, next) => {
     next(new ApiError("subcategories not found", 404));
   }
 });
+
+//  Get subcategories by category id
+let getSubByCategoriesByCategoryId = (req, res) => {
+  SubCategories.find({ categoryId: req.params.id })
+    .then((subCategories) => res.json(subCategories))
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+};
 
 // Add new category
 let addSubCategory = (req, res) => {
@@ -132,4 +140,5 @@ module.exports = {
   updateSubCategory,
   deleteSubCategory,
   deleteAllSubCategories,
+  getSubByCategoriesByCategoryId,
 };
