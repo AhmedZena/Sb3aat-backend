@@ -9,6 +9,7 @@ const orderSchema = new Schema({
   deliveryDate: { type: Date },
   numsOrdered: { type: Number, required: true },
   totalPrice: { type: Number, required: true },
+  isPaid: { type: Boolean, default: false },
 });
 
 const OrderModel = mongoose.model("Order", orderSchema);

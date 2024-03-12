@@ -15,6 +15,7 @@ const createOrder = (req, res) => {
       res.status(201).json(savedOrder);
     })
     .catch((error) => {
+      console.log(error);
       res.status(500).json({ error: "Failed to create order", details: error });
     });
 };
