@@ -60,6 +60,13 @@ const getCourses = (req, res) => {
         .json({ error: "Failed to retrieve courses", details: error });
     });
 };
+//get courses by category id :-
+const getCoursesByCategoryId = (req, res) => {
+  coursesModel
+    .find({ CategoryID: req.params.id })
+    .then((courses) => res.json(courses))
+    .catch((err) => res.status(400).json(`Error: ${err}`));
+};
 //get courses by id :-
 const getCoursesById = (req, res) => {
   let coursesId = req.params.coursesId;
@@ -135,4 +142,5 @@ module.exports = {
   getCoursesById,
   deleteCourById,
   deleteAllCourses,
+  getCoursesByCategoryId
 };
