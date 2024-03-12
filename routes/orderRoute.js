@@ -20,7 +20,7 @@ const {
 
 // router.post("/", createOrder);
 // Create Order
-router.post("/", clientVerfied, createOrder);
+router.post("/", createOrder);
 
 // Orders by Client
 router.get("/client/:clientId", clientVerfied, getOrderByClient);
