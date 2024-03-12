@@ -44,7 +44,9 @@ const getOrderByFreelancer = async (req, res) => {
 // get order by id
 const getOrderById = async (req, res) => {
   try {
-    const order = await OrderModel.findOne({ orderId: req.params.orderId });
+    // const order = await OrderModel.findOne({ orderId: req.params.orderId });
+
+    const order = await OrderModel.findById(req.params.orderId);
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
     }
@@ -58,7 +60,8 @@ const getOrderById = async (req, res) => {
 const updateOrderById = async (req, res) => {
   try {
     const order = await OrderModel.findOneAndUpdate(
-      { orderId: req.params.orderId },
+      //   { orderId: req.params.orderId },
+      { _id: req.params.orderId },
       { $set: req.body },
       { new: true }
     );
@@ -75,7 +78,8 @@ const updateOrderById = async (req, res) => {
 const deleteOrder = async (req, res) => {
   try {
     const order = await OrderModel.findOneAndDelete({
-      orderId: req.params.orderId,
+      //   orderId: req.params.orderId,
+      _id: req.params.orderId,
     });
     if (!order) {
       return res.status(404).json({ error: "Order not found" });
