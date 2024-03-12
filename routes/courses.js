@@ -6,12 +6,13 @@ const {
   updateCourses,
   getCoursesById,
   deleteCourById,
-  deleteAllCourses
+  deleteAllCourses,
+  getCoursesByCategoryId,  
 } = require("../controllers/courses");
 
 // Create a new Courses
 Router.post("/", createCourses);
-Router.delete("/",deleteAllCourses)
+Router.delete("/", deleteAllCourses);
 
 // Get allCourses
 Router.get("/", getCourses);
