@@ -21,5 +21,6 @@ Router.get("/:id", getCoursesById);
 Router.patch("/:id", updateCourses);
 // Delete a Courses
 Router.delete("/:id", deleteCourById);
+Router.get("/category/:id", getCoursesByCategoryId);
 
 module.exports = Router;
