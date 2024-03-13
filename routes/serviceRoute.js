@@ -27,6 +27,6 @@ Router.patch("/:id", freelancerVerfied, updateService);
 // delete a service
 Router.delete("/:id", adminOrFreelancerVerfied, deleteService);
 // Get services by category
-Router.get("/category/:categoryId", getServicesByCategoryId);
+Router.get("/category/:subCategoryID", getServicesByCategoryId);
 
 module.exports = Router;
