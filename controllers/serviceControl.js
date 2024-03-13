@@ -48,7 +48,7 @@ const getServices = (req, res) => {
 //get all service by subcategory id :-
 let getServicesByCategoryId = (req, res) => {
   serviceModel
-    .find({ categoryID: req.params.id })
+    .find({ subCategoryID: req.params.id })
     .then((services) => res.json(services))
     .catch((err) => res.status(400).json(`Error: ${err}`));
 };
