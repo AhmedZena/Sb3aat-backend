@@ -30,3 +30,4 @@ Router.delete("/:id", adminOrFreelancerVerfied, deleteService);
 Router.get("/category/:subCategoryID", getServicesByCategoryId);
 
 module.exports = Router;
+
