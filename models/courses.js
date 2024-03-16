@@ -38,7 +38,7 @@ const coursesSchema = new Schema({
 });
 // check if category name is unique
 const coursesModel = mongoose.model("course", coursesSchema);
-coursesSchema.path("Title").validate(async function (value) {
+coursesSchema.path("title").validate(async function (value) {
   console.log(value);
   const nameCount = await coursesModel.countDocuments({
     Title: value,
