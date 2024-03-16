@@ -6,7 +6,8 @@ const {
   updateService,
   getServiceById,
   deleteService,
-  getServicesByCategoryId // Import the function here
+  getServicesByCategoryId, // Import the function here
+  acceptServiceRequest,
 } = require("../controllers/serviceControl");
 
 let {
@@ -22,6 +23,8 @@ Router.post("/", freelancerVerfied, createService);
 Router.get("/", getServices);
 // get service by id
 Router.get("/:id", getServiceById);
+// Accept service request
+Router.patch("/accept/:id", adminVerfied, acceptServiceRequest);
 // Update a service
 Router.patch("/:id", freelancerVerfied, updateService);
 // delete a service
@@ -30,4 +33,3 @@ Router.delete("/:id", adminOrFreelancerVerfied, deleteService);
 Router.get("/category/:subCategoryID", getServicesByCategoryId);
 
 module.exports = Router;
-

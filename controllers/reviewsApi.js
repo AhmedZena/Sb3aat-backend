@@ -1,5 +1,6 @@
 const review = require("../models/reviewSchema");
-
+const serviceModel = require("../models/serviceModel");
+const coursesModel = require("../models/courses");
 // get all reviews
 const getReviews = (req, res) => {
   review
@@ -28,14 +29,35 @@ const getReviewsByServiceId = (req, res) => {
   });
 };
 
-const createNewReview = (req, res) => {
-  let { reviewID, serviceID, clientID, rating, comment } = req.body;
+const createNewReview = async (req, res) => {
+  console.log(req.user);
+  let { serviceID, rating, comment } = req.body;
+
+  // check already if the serviceID and clientID exists
+  const serviceExists = await serviceModel.findById(serviceID);
+  const courseExists = await coursesModel.findById(serviceID);
+  console.log(serviceExists, courseExists);
+  if (!serviceExists && !courseExists) {
+    return res.status(404).json({ error: "Service or course not found" });
+  }
+
+  // only one review per course
+  if (courseExists) {
+    const reviewExists = await review.findOne({
+      serviceID,
+      clientID: req.user.id,
+    });
+    if (reviewExists) {
+      return res
+        .status(400)
+        .json({ error: "You have already reviewed this course" });
+    }
+  }
 
   try {
     const newReview = new review({
-      reviewID: reviewID,
       serviceID: serviceID,
-      clientID: clientID,
+      clientID: req.user.id,
       rating: rating,
       comment: comment,
     });
@@ -90,12 +112,12 @@ const deleteReview = (req, res) => {
   }
   console.log(review.findById(reviewID).then((review) => console.log(review)));
   review
-    .findOneAndDelete({ reviewID })
+    .findOneAndDelete({ _id: reviewID })
     .then((deletedReview) => {
       if (!deletedReview) {
         return res.status(404).json({ error: "Review not found" });
       }
-      res.status(200).json(deletedReview);
+      res.status(200).json({ message: "Review deleted successfully" });
     })
     .catch((error) => {
       res

@@ -44,6 +44,7 @@ const registerUserCtrl = asyncHandler(async (req, res) => {
 // login user
 const loginUserCtrl = asyncHandler(async (req, res) => {
   const validation = validateLoginUser(req.body);
+  console.log(validation);
   if (validation.error) {
     return res
       .status(400)

@@ -1,8 +1,15 @@
 const coursesModel = require("../models/courses");
 
 const createCourses = (req, res) => {
-  const { freelancerId, title, description, categoryId, price, duration, courseMaterial } =
-    req.body;
+  const {
+    freelancerId,
+    title,
+    description,
+    categoryId,
+    price,
+    duration,
+    courseMaterial,
+  } = req.body;
 
   const newCourses = new coursesModel({
     freelancerId,
@@ -20,7 +27,9 @@ const createCourses = (req, res) => {
       res.status(201).json(savedCourses);
     })
     .catch((error) => {
-      res.status(500).json({ error: "Failed to create Courses", details: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to create Courses", details: error.message });
     });
 };
 //get all courses
@@ -31,7 +40,9 @@ const getCourses = (req, res) => {
       res.status(200).json(courses);
     })
     .catch((error) => {
-      res.status(500).json({ error: "Failed to retrieve courses", details: error });
+      res
+        .status(500)
+        .json({ error: "Failed to retrieve courses", details: error });
     });
 };
 
@@ -75,7 +86,11 @@ const updateCourses = async (req, res) => {
   const updatedFields = req.body;
 
   try {
-    const updatedCourses = await coursesModel.findByIdAndUpdate(courseId, updatedFields, { new: true });
+    const updatedCourses = await coursesModel.findByIdAndUpdate(
+      courseId,
+      updatedFields,
+      { new: true }
+    );
 
     if (!updatedCourses) {
       res.status(404).json({ error: "Course not found" });
@@ -94,7 +109,7 @@ const deleteCourById = async (req, res) => {
 
   try {
     const result = await coursesModel.findByIdAndDelete(courseId);
-    
+
     if (!result) {
       res.status(404).json({ error: "Course not found" });
     } else {
@@ -116,6 +131,29 @@ const deleteAllCourses = async (req, res) => {
   }
 };
 
+//acceptCourseRequest
+const acceptCourseRequest = async (req, res) => {
+  const courseId = req.params.id;
+  const updatedFields = { isAccepted: true };
+
+  try {
+    const updatedCourse = await coursesModel.findByIdAndUpdate(
+      (_id = courseId),
+      { $set: updatedFields },
+      { new: true }
+    );
+
+    if (!updatedCourse) {
+      res.status(404).json({ error: "Course not found" });
+    } else {
+      res.status(200).json(updatedCourse);
+    }
+  } catch (error) {
+    console.error("Error accepting course request:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createCourses,
   getCourses,
@@ -124,4 +162,5 @@ module.exports = {
   deleteCourById,
   deleteAllCourses,
   getCoursesByCategoryId,
+  acceptCourseRequest,
 };

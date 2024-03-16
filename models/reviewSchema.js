@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const reviewSchema = mongoose.Schema(
   {
-    reviewID: String,
+    // reviewID: String,
     serviceID: { type: mongoose.Schema.Types.ObjectId, required: true },
     clientID: { type: mongoose.Schema.Types.ObjectId, required: true },
     rating: {
