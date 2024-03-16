@@ -8,6 +8,10 @@ const serviceSchema = mongoose.Schema({
   price: Number,
   deliveryTime: String,
   serviceImage: String,
+  isAccepted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const secviceModel = mongoose.model("service", serviceSchema);

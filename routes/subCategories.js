@@ -8,7 +8,7 @@ let {
   updateSubCategory,
   deleteSubCategory,
   deleteAllSubCategories,
-  getAllSubByCategoryId, // Include this function from your controller
+  getAllSubByCategoryId,
 } = require("../controllers/subCategories");
 
 // Define routes

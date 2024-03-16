@@ -1,11 +1,23 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
-const { User, validateRegisterUser, validateLoginUser} = require("../models/users");
+const {
+  User,
+  validateRegisterUser,
+  validateLoginUser,
+} = require("../models/users");
 
+const coursesModel = require("../models/courses");
+const serviceModel = require("../models/serviceModel");
+const categoryModel = require("../models/categories");
+const subCategoryModel = require("../models/subCategories");
+
+// register user
 const registerUserCtrl = asyncHandler(async (req, res) => {
   const validation = validateRegisterUser(req.body);
   if (validation.error) {
-    return res.status(400).json({ message: validation.error.details[0].message });
+    return res
+      .status(400)
+      .json({ message: validation.error.details[0].message });
   }
   let user = await User.findOne({ email: req.body.email });
   if (user) {
@@ -19,7 +31,7 @@ const registerUserCtrl = asyncHandler(async (req, res) => {
     username: req.body.username,
     email: req.body.email,
     password: hashedPassword,
-    role: req.body.role
+    role: req.body.role,
   });
   await user.save();
   res
@@ -29,12 +41,15 @@ const registerUserCtrl = asyncHandler(async (req, res) => {
   // send
 });
 
+// login user
 const loginUserCtrl = asyncHandler(async (req, res) => {
-    const validation = validateLoginUser(req.body);
-    if (validation.error) {
-      return res.status(400).json({ message: validation.error.details[0].message });
-    }
-    
+  const validation = validateLoginUser(req.body);
+  if (validation.error) {
+    return res
+      .status(400)
+      .json({ message: validation.error.details[0].message });
+  }
+
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return res.status(400).json({ message: "invalid email or password" });
@@ -57,13 +72,98 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
     username: user.username,
     token,
     // user.freelancerDetails
-    freelancerDetails:null,
+    freelancerDetails: null,
   });
 });
 
-const getAllUsersCtrl = asyncHandler(async (req,res)=>{
+// get all users
+const getAllUsersCtrl = asyncHandler(async (req, res) => {
   console.log(req.headers.authorization.split(" ")[1]);
-  const users = await User.find({},{_id: 0, username:1,email:1,bio:1});
-  res.status(200).json(users)
-})
-module.exports ={registerUserCtrl,loginUserCtrl,getAllUsersCtrl}
+  const users = await User.find({}, { username: 1, email: 1, role: 1 });
+  //   res.status(200).json(users);
+  // show nums of users and users
+  res.status(200).json({ count: users.length, users });
+});
+
+// get clients numbers and clients
+const getClientsCtrl = asyncHandler(async (req, res) => {
+  const clients = await User.find({ role: "user" }, { username: 1, email: 1 });
+  res.status(200).json({ count: clients.length, clients });
+});
+
+// get freelancers numbers and freelancers
+const getFreelancersCtrl = asyncHandler(async (req, res) => {
+  const freelancers = await User.find(
+    { role: "freelancer" },
+    { username: 1, email: 1 }
+  );
+  res.status(200).json({ count: freelancers.length, freelancers });
+});
+
+// get admins numbers and admins
+const getAdminsCtrl = asyncHandler(async (req, res) => {
+  const admins = await User.find({ role: "admin" }, { username: 1, email: 1 });
+  res.status(200).json({ count: admins.length, admins });
+});
+
+// get user data by token
+const getUserDataByToken = asyncHandler(async (req, res) => {
+  console.log(req.headers.authorization);
+  console.log(req.user);
+  const user = await User.findById(req.user.id);
+  res.status(200).json(user);
+});
+
+// delete user by id
+const deleteUserById = asyncHandler(async (req, res) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  res.status(200).json({ message: "User deleted successfully" });
+});
+
+// convert user to admin
+const convertUserToAdmin = asyncHandler(async (req, res) => {
+  const user = await User.findByIdAndUpdate(req.params.id, { role: "admin" });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  res.status(200).json({ message: "User converted to admin successfully" });
+});
+
+// get lenght of courses, services, categories, subcategories, users, clients, freelancers, admins
+const getLengthOfData = asyncHandler(async (req, res) => {
+  const courses = await coursesModel.find();
+  const services = await serviceModel.find();
+  const categories = await categoryModel.find();
+  const subCategories = await subCategoryModel.find();
+  const users = await User.find();
+  const clients = await User.find({ role: "user" });
+  const freelancers = await User.find({ role: "freelancer" });
+  const admins = await User.find({ role: "admin" });
+
+  res.status(200).json({
+    users: users.length,
+    clients: clients.length,
+    freelancers: freelancers.length,
+    admins: admins.length,
+    categories: categories.length,
+    subCategories: subCategories.length,
+    services: services.length,
+    courses: courses.length,
+  });
+});
+
+module.exports = {
+  registerUserCtrl,
+  loginUserCtrl,
+  getAllUsersCtrl,
+  getUserDataByToken,
+  getClientsCtrl,
+  getFreelancersCtrl,
+  getAdminsCtrl,
+  deleteUserById,
+  convertUserToAdmin,
+  getLengthOfData,
+};

@@ -13,15 +13,19 @@ const coursesSchema = new Schema({
   Price: Number,
   Duration: String,
   CourseMaterial: Object,
+  isAccepted: {
+    type: Boolean,
+    default: false,
+  },
 });
 // check if category name is unique
 const coursesModel = mongoose.model("course", coursesSchema);
 coursesSchema.path("Title").validate(async function (value) {
-    console.log(value);
-    const nameCount = await coursesModel.countDocuments({
-      Title: value,
-    });
-    return !nameCount;
-  }, "course Title already exists");
+  console.log(value);
+  const nameCount = await coursesModel.countDocuments({
+    Title: value,
+  });
+  return !nameCount;
+}, "course Title already exists");
 
 module.exports = coursesModel;

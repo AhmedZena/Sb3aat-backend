@@ -4,12 +4,31 @@ const {
   registerUserCtrl,
   loginUserCtrl,
   getAllUsersCtrl,
+  getUserDataByToken,
+  getClientsCtrl,
+  getFreelancersCtrl,
+  getAdminsCtrl,
+  deleteUserById,
+  convertUserToAdmin,
+  getLengthOfData,
 } = require("../controllers/authController");
-const { adminVerfied, clientVerfied } = require("../middlewares/auth");
+const {
+  verifyToken,
+  adminVerfied,
+  clientVerfied,
+} = require("../middlewares/auth");
 
 router.post("/register", registerUserCtrl);
 router.post("/login", loginUserCtrl);
 
 // router.route("/Users").get(adminVerfied, getAllUsersCtrl);
 router.get("/Users", getAllUsersCtrl);
+
+router.get("/profile", verifyToken, getUserDataByToken);
+router.get("/clients", verifyToken, getClientsCtrl);
+router.get("/freelancers", verifyToken, getFreelancersCtrl);
+router.get("/admins", verifyToken, getAdminsCtrl);
+router.delete("/deleteUser/:id", verifyToken, deleteUserById);
+router.patch("/convertToAdmin/:id", verifyToken, convertUserToAdmin);
+router.get("/dataLength", verifyToken, getLengthOfData);
 module.exports = router;
