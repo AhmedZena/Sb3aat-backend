@@ -26,7 +26,7 @@ let getAllCategories = (req, res) => {
   } else {
     Category.find()
       .then((categories) =>
-        res.status(200).json({ results: categories.length, categories })
+        res.status(200).json( categories )
       )
       .catch((err) => res.status(400).json(`Error: ${err}`));
   }
