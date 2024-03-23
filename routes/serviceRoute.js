@@ -16,6 +16,7 @@ let {
   freelancerVerfied,
   adminVerfied,
   adminOrFreelancerVerfied,
+  verifyToken,
 } = require("../middlewares/auth");
 
 // Create a new service
@@ -25,10 +26,10 @@ Router.post("/", freelancerVerfied, createService);
 Router.get("/", getServices);
 
 // Get accepted services
-Router.get("/accepted", adminVerfied, getAcceptedServices);
+Router.get("/accepted", verifyToken, getAcceptedServices);
 
 // Get not accepted services
-Router.get("/not-accepted", adminVerfied, getNotAcceptedServices);
+Router.get("/not-accepted", verifyToken, getNotAcceptedServices);
 
 // get service by id
 Router.get("/:id", getServiceById);
