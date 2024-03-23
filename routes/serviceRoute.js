@@ -8,6 +8,8 @@ const {
   deleteService,
   getServicesByCategoryId, // Import the function here
   acceptServiceRequest,
+  getAcceptedServices,
+  getNotAcceptedServices,
 } = require("../controllers/serviceControl");
 
 let {
@@ -21,6 +23,13 @@ Router.post("/", freelancerVerfied, createService);
 
 // Get all services
 Router.get("/", getServices);
+
+// Get accepted services
+Router.get("/accepted", adminVerfied, getAcceptedServices);
+
+// Get not accepted services
+Router.get("/not-accepted", adminVerfied, getNotAcceptedServices);
+
 // get service by id
 Router.get("/:id", getServiceById);
 // Accept service request

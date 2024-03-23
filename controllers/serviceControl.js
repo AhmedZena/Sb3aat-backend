@@ -146,6 +146,35 @@ const acceptServiceRequest = (req, res) => {
     });
 };
 
+// return accepted services
+const getAcceptedServices = (req, res) => {
+  serviceModel
+    .find({ isAccepted: true })
+    .then((services) => {
+      res.status(200).json(services);
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error: "Failed to retrieve services", details: error });
+    });
+};
+
+// not accepted services
+const getNotAcceptedServices = (req, res) => {
+  serviceModel
+    .find({ isAccepted: false })
+    .then((services) => {
+      console.log(services);
+      res.status(200).json(services);
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error: "Failed to retrieve services", details: error });
+    });
+};
+
 module.exports = {
   createService,
   getServices,
@@ -154,4 +183,6 @@ module.exports = {
   deleteService,
   getServicesByCategoryId,
   acceptServiceRequest,
+  getAcceptedServices,
+  getNotAcceptedServices,
 };
