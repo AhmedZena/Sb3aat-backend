@@ -80,7 +80,17 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
 // get all users
 const getAllUsersCtrl = asyncHandler(async (req, res) => {
   console.log(req.headers.authorization.split(" ")[1]);
-  const users = await User.find({}, { username: 1, email: 1, role: 1 });
+  const users = await User.find(
+    {},
+    {
+      _id: 1,
+      username: 1,
+      email: 1,
+      isAccountVerified: 1,
+      profilePhoto: 1,
+      role: 1,
+    }
+  );
   //   res.status(200).json(users);
   // show nums of users and users
   res.status(200).json({ count: users.length, users });
@@ -88,7 +98,17 @@ const getAllUsersCtrl = asyncHandler(async (req, res) => {
 
 // get clients numbers and clients
 const getClientsCtrl = asyncHandler(async (req, res) => {
-  const clients = await User.find({ role: "user" }, { username: 1, email: 1 });
+  const clients = await User.find(
+    { role: "user" },
+    {
+      _id: 1,
+      username: 1,
+      email: 1,
+      isAccountVerified: 1,
+      profilePhoto: 1,
+      role: 1,
+    }
+  );
   res.status(200).json({ count: clients.length, clients });
 });
 
@@ -96,14 +116,31 @@ const getClientsCtrl = asyncHandler(async (req, res) => {
 const getFreelancersCtrl = asyncHandler(async (req, res) => {
   const freelancers = await User.find(
     { role: "freelancer" },
-    { username: 1, email: 1 }
+    {
+      _id: 1,
+      username: 1,
+      email: 1,
+      isAccountVerified: 1,
+      profilePhoto: 1,
+      role: 1,
+    }
   );
   res.status(200).json({ count: freelancers.length, freelancers });
 });
 
 // get admins numbers and admins
 const getAdminsCtrl = asyncHandler(async (req, res) => {
-  const admins = await User.find({ role: "admin" }, { username: 1, email: 1 });
+  const admins = await User.find(
+    { role: "admin" },
+    {
+      _id: 1,
+      username: 1,
+      email: 1,
+      isAccountVerified: 1,
+      profilePhoto: 1,
+      role: 1,
+    }
+  );
   res.status(200).json({ count: admins.length, admins });
 });
 
