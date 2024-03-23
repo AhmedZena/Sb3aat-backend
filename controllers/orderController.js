@@ -20,6 +20,19 @@ const createOrder = (req, res) => {
     });
 };
 
+// get all orders
+const getOrders = (req, res) => {
+  OrderModel.find()
+    .then((orders) => {
+      res.status(200).json(orders);
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error: "Failed to retrieve orders", details: error });
+    });
+};
+
 //  get Orders for Client by id
 const getOrderByClient = async (req, res) => {
   try {
@@ -98,4 +111,5 @@ module.exports = {
   getOrderById,
   updateOrderById,
   deleteOrder,
+  getOrders,
 };

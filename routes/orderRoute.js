@@ -8,6 +8,7 @@ const {
   getOrderById,
   updateOrderById,
   deleteOrder,
+  getOrders,
 } = require("../controllers/orderController");
 
 const {
@@ -21,6 +22,9 @@ const {
 // router.post("/", createOrder);
 // Create Order
 router.post("/", createOrder);
+
+// Get Orders
+router.get("/", getOrders);
 
 // Orders by Client
 router.get("/client/:clientId", getOrderByClient);
