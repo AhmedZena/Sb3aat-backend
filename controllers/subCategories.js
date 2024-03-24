@@ -51,7 +51,7 @@ let getAllSubByCategoryId = asyncHandler(async (req, res, next) => {
 
   console.log(subCategories);
   if (subCategories) {
-    res.status(200).json([ subCategories ]);
+    res.status(200).json( subCategories]);
   } else {
     next(new ApiError("subcategories not found", 404));
   }
