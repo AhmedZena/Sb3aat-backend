@@ -32,7 +32,19 @@ const serviceSchema = mongoose.Schema({
   },
   subCategoryID: {
     type: mongoose.Schema.Types.ObjectId,
-    required: [true, "category id is required"],
+    required: [true, "sub category id is required"],
+  },
+
+  //    array of tags
+  tags: {
+    type: Array,
+    required: [true, "tags id is required"],
+  },
+
+  //   buyer instrunctions
+  buyerInstruction: {
+    type: String,
+    required: [true, "buyer instrunctions is required"],
   },
 });
 
