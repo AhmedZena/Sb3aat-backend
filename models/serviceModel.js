@@ -38,7 +38,6 @@ const serviceSchema = mongoose.Schema({
   //    array of tags
   tags: {
     type: Array,
-    required: [true, "tags id is required"],
   },
 
   //   buyer instrunctions
