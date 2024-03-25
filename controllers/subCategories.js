@@ -37,7 +37,7 @@ let getSubCategoryById = asyncHandler(async (req, res, next) => {
   let subCategory = await SubCategories.findById(req.params.id);
   console.log(subCategory);
   if (subCategory) {
-    res.status(200).json({ subCategory});
+    res.status(200).json({ subCategory });
   } else {
     next(new ApiError("category not found", 404));
   }
@@ -51,7 +51,7 @@ let getAllSubByCategoryId = asyncHandler(async (req, res, next) => {
 
   console.log(subCategories);
   if (subCategories) {
-    res.status(200).json( subCategories]);
+    res.status(200).json(subCategories);
   } else {
     next(new ApiError("subcategories not found", 404));
   }
