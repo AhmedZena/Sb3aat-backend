@@ -1,3 +1,5 @@
+// serviceRoutes.js
+
 const express = require("express");
 const Router = express.Router();
 const {
@@ -32,13 +34,17 @@ Router.get("/accepted", verifyToken, getAcceptedServices);
 Router.get("/not-accepted", verifyToken, getNotAcceptedServices);
 
 // get service by id
-Router.get("/:id", getServiceById);
+Router.get("/service/:id", getServiceById); // Added "service" segment to the route path
+
 // Accept service request
 Router.patch("/accept/:id", adminVerfied, acceptServiceRequest);
+
 // Update a service
 Router.patch("/:id", freelancerVerfied, updateService);
+
 // delete a service
 Router.delete("/:id", adminOrFreelancerVerfied, deleteService);
+
 // Get services by category
 Router.get("/category/:subCategoryID", getServicesByCategoryId);
 

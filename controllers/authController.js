@@ -65,6 +65,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   }
 
   const token = user.generateAuthToken();
+  localStorage.setItem('token', token);
   res.status(200).json({
     _id: user._id,
     isAdmin: user.isAdmin,
@@ -96,6 +97,14 @@ const getAllUsersCtrl = asyncHandler(async (req, res) => {
   res.status(200).json({ count: users.length, users });
 });
 
+//get user by id 
+const getUserByIdCtrl = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  res.status(200).json(user);
+});
 // get clients numbers and clients
 const getClientsCtrl = asyncHandler(async (req, res) => {
   const clients = await User.find(
@@ -150,6 +159,7 @@ const getUserDataByToken = asyncHandler(async (req, res) => {
   console.log(req.user);
   const user = await User.findById(req.user.id);
   res.status(200).json(user);
+  consle.log(user);
 });
 
 // delete user by id
@@ -204,4 +214,5 @@ module.exports = {
   deleteUserById,
   convertUserToAdmin,
   getLengthOfData,
+  getUserByIdCtrl
 };

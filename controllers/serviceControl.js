@@ -65,7 +65,7 @@ let getServicesByCategoryId = (req, res) => {
 };
 //get service by id :-
 const getServiceById = (req, res) => {
-  let serviceId = req.params.serviceId;
+  let serviceId = req.params.id;
   //checking for valid id or not
   if (!serviceId) {
     serviceModel.find().then((services) => {
