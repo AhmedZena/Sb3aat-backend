@@ -6,8 +6,10 @@ const createService = (req, res) => {
   console.log(req.body);
   const {
     freelancerId,
-    categoryID,
+    buyerInstruction,
+    subCategoryID,
     title,
+    tags,
     description,
     price,
     deliveryTime,
@@ -16,8 +18,10 @@ const createService = (req, res) => {
   try {
     const newService = new serviceModel({
       freelancerId,
-      categoryID,
+      buyerInstruction,
+      subCategoryID,
       title,
+      tags,
       description,
       price,
       deliveryTime,

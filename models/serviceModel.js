@@ -10,7 +10,7 @@ const serviceSchema = mongoose.Schema({
     required: [true, "service title is required"],
     unique: [true, "service title must be unique"],
   },
-  freelanceId: {
+  freelancerId: {
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "freelancer id is required"],
   },
