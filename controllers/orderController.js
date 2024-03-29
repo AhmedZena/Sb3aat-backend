@@ -1,6 +1,7 @@
 // const OrderModel = require("../models/order");
 const OrderModel = require("../models/order");
-
+const serviceModel = require("../models/serviceModel");
+const courseModel = require("../models/courses");
 // create order
 const createOrder = (req, res) => {
   console.log(req.body);
@@ -37,7 +38,27 @@ const getOrders = (req, res) => {
 const getOrderByClient = async (req, res) => {
   try {
     const orders = await OrderModel.find({ clientId: req.params.clientId });
-    res.status(200).json(orders);
+
+    const populatedOrders = await Promise.all(
+      orders.map(async (order) => {
+        let type = null;
+        let service = await serviceModel.findOne({
+          _id: order.serviceOrCourseId,
+        });
+        let course = null;
+
+        if (!service) {
+          course = await courseModel.findOne({ _id: order.serviceOrCourseId });
+          if (course) type = "course";
+        } else {
+          type = "service";
+        }
+
+        return { ...order.toObject(), service, course, type };
+      })
+    );
+
+    res.status(200).json(populatedOrders);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
