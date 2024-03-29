@@ -4,7 +4,6 @@ let Schema = mongoose.Schema;
 const orderSchema = new Schema({
   serviceOrCourseId: { type: String, required: true },
   clientId: { type: String, required: true },
-  freelancerId: { type: String, required: true },
   orderDate: { type: Date, required: true },
   deliveryDate: { type: Date },
   numsOrdered: { type: Number, required: true },
