@@ -47,7 +47,7 @@ const getMessages = async (req, res) => {
       // If conversation doesn't exist, create a new one
       conversation = new Conversation({
         members: [sender, receiver],
-        messages: [] // initialize messages array for the new conversation
+        messages: [] 
       });
 
       // Save the new conversation
@@ -61,9 +61,23 @@ const getMessages = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+ 
+//get all conversations of the user 
+
+const getConversations = async (req, res) => {
+  try {
+    const { userId } = req.params; // Access userId from request params
+    const conversations = await Conversation.find({ members: userId });
+    res.status(200).json(conversations);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 
 module.exports = {
   createMessage,
-  getMessages
+  getMessages,
+  getConversations
 };
