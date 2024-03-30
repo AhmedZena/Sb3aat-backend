@@ -7,6 +7,7 @@ const {
   getNotificationsByUserId,
   updateNotificationReadStatus,
   postNotification,
+  getUnreadNotificationsByUserId,
 } = require("../controllers/notificationController");
 
 // Destructured imports
@@ -22,7 +23,8 @@ const {
 // Routes using the middleware
 router.get("/", verifyToken, adminVerfied, getAllNotifications);
 router.get("/user", verifyToken, getNotificationsByUserId);
-router.patch("/:id", verifyToken, adminVerfied, updateNotificationReadStatus);
+router.get("/unread", verifyToken, getUnreadNotificationsByUserId);
+router.patch("/:id", verifyToken, updateNotificationReadStatus);
 router.post("/", verifyToken, postNotification);
 
 module.exports = router;
