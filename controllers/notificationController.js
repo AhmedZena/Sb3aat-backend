@@ -12,7 +12,7 @@ const getAllNotifications = async (req, res) => {
   } catch (error) {
     res.status(500).send(error.message);
   }
-};git 
+}
 
 // get notifications that not read on user id and length of them
 const getUnreadNotificationsByUserId = async (req, res) => {
