@@ -55,6 +55,9 @@ const paymentRoutes = require("./routes/paymentRoute");
 // conversation
 const conversationRoutes = require("./routes/conversation");
 
+// search
+const searchRoutes = require("./routes/searchRoute");
+
 // dontenv config
 require("dotenv").config({ path: "./.config.env" });
 console.log(process.env.PORT);
@@ -108,7 +111,8 @@ app.use("/api/payments", paymentRoutes);
 //conversation route
 app.use("/api/conversations", conversationRoutes);
 
-
+// search
+app.use("/api/search", searchRoutes);
 
 // Handling unhandled routes
 app.all("*", (req, res, next) => {
