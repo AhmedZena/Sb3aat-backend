@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
 
+
 const corsOptions = {
   origin: "*", // Allows all origins
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Optionally, you can specify the allowed methods
@@ -58,6 +59,10 @@ const conversationRoutes = require("./routes/conversation");
 // search
 const searchRoutes = require("./routes/searchRoute");
 
+// stripe 
+const stripe = require("./routes/stripe");
+
+
 // dontenv config
 require("dotenv").config({ path: "./.config.env" });
 console.log(process.env.PORT);
@@ -107,6 +112,9 @@ app.use("/api/notifications", notificationRoutes);
 
 // payment
 app.use("/api/payments", paymentRoutes);
+
+// stripe
+app.use("/api/stripe", stripe);
 
 //conversation route
 app.use("/api/conversations", conversationRoutes);
