@@ -79,7 +79,6 @@ const postNotification = async (req, res) => {
 
 module.exports = {
   getAllNotifications,
-  getNotificationsByUserId,
   updateNotificationReadStatus,
   postNotification,
   getUnreadNotificationsByUserId,

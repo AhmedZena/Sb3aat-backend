@@ -4,7 +4,6 @@ const router = express.Router();
 
 const {
   getAllNotifications,
-  getNotificationsByUserId,
   updateNotificationReadStatus,
   postNotification,
   getUnreadNotificationsByUserId,
@@ -22,7 +21,6 @@ const {
 
 // Routes using the middleware
 router.get("/", verifyToken, adminVerfied, getAllNotifications);
-router.get("/user", verifyToken, getNotificationsByUserId);
 router.get("/unread", verifyToken, getUnreadNotificationsByUserId);
 router.patch("/:id", verifyToken, updateNotificationReadStatus);
 router.post("/", verifyToken, postNotification);

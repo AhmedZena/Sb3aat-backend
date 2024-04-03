@@ -1,3 +1,4 @@
+const { string } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -12,8 +13,8 @@ const coursesSchema = new Schema({
     required: [true, "course description is required"],
   },
   freelanceId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: [true, "freelancer id is required"],
+    type: String,
+    required: [true, "freelancer idd   is required"],
   },
   categoryId: {
     type: Schema.Types.ObjectId,
@@ -30,6 +31,10 @@ const coursesSchema = new Schema({
   courseMaterial: {
     type: Object,
     required: [true, "course material is required"],
+  },
+  CourseImg: {
+    type: String,
+    required: [true, "course image is required"],
   },
   isAccepted: {
     type: Boolean,

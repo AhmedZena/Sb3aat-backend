@@ -9,6 +9,7 @@ const createCourses = (req, res) => {
     price,
     duration,
     courseMaterial,
+    CourseImg
   } = req.body;
 
   const newCourses = new coursesModel({
@@ -19,6 +20,7 @@ const createCourses = (req, res) => {
     price,
     duration,
     courseMaterial,
+    CourseImg
   });
 
   newCourses
