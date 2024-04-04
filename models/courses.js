@@ -1,7 +1,6 @@
 const { string } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 const coursesSchema = new Schema({
   title: {
     type: String,
@@ -12,9 +11,9 @@ const coursesSchema = new Schema({
     type: String,
     required: [true, "course description is required"],
   },
-  freelanceId: {
-    type: String,
-    required: [true, "freelancer idd   is required"],
+  freelancerId: { // Changed field name from freelanceId to freelancerId
+    type: Schema.Types.ObjectId,
+    required: [true, "freelancer idd is required"],
   },
   categoryId: {
     type: Schema.Types.ObjectId,
@@ -30,7 +29,7 @@ const coursesSchema = new Schema({
   },
   courseMaterial: {
     type: Object,
-    required: [true, "course material is required"],
+    // required: [true, "course material is required"],
   },
   CourseImg: {
     type: String,
@@ -41,14 +40,9 @@ const coursesSchema = new Schema({
     default: false,
   },
 });
+
 // check if category name is unique
 const coursesModel = mongoose.model("course", coursesSchema);
-// coursesSchema.path("title").validate(async function (value) {
-//   console.log(value);
-//   const nameCount = await coursesModel.countDocuments({
-//     Title: value,
-//   });
-//   return !nameCount;
-// }, "course Title already exists");
+
 
 module.exports = coursesModel;

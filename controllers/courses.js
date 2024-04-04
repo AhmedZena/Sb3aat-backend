@@ -34,6 +34,7 @@ const createCourses = (req, res) => {
         .json({ error: "Failed to create Courses", details: error.message });
     });
 };
+
 //get all courses
 const getCourses = (req, res) => {
   coursesModel
