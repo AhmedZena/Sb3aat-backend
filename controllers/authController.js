@@ -173,17 +173,31 @@ const deleteUserById = asyncHandler(async (req, res) => {
 // edit user by id
 
 const editUserById = asyncHandler(async (req, res) => {
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
+  //   const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+  //     new: true,
+  //     runValidators: true,
+  //   });
+  //   if (!user) {
+  //     return res.status(404).json({ message: "User not found" });
+  //   }
+  //   res.status(200).json(user);
+
+  // try catch
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error", error });
   }
-  res.status(200).json(user);
 });
 
-module.exports = { editUserById };
+// module.exports = { editUserById };
 
 // convert user to admin
 const convertUserToAdmin = asyncHandler(async (req, res) => {
@@ -229,5 +243,5 @@ module.exports = {
   convertUserToAdmin,
   getLengthOfData,
   getUserByIdCtrl,
-  editUserById
+  editUserById,
 };
