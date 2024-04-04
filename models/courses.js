@@ -12,7 +12,7 @@ const coursesSchema = new Schema({
     type: String,
     required: [true, "course description is required"],
   },
-  freelanceId: {
+  freelancerId: {
     type: String,
     required: [true, "freelancer idd   is required"],
   },
