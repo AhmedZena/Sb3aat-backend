@@ -14,7 +14,7 @@ const coursesSchema = new Schema({
   },
   freelancerId: {
     type: String,
-    required: [true, "freelancer idd   is required"],
+    required: [true, "freelancer id  is required"],
   },
   categoryId: {
     type: Schema.Types.ObjectId,

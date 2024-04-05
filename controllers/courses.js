@@ -1,5 +1,5 @@
 const coursesModel = require("../models/courses");
-
+const serviceModel = require("../models/serviceModel");
 const createCourses = (req, res) => {
   const {
     freelancerId,
@@ -156,23 +156,6 @@ const acceptCourseRequest = async (req, res) => {
   }
 };
 
-// api to convert all prices from string to number
-const convertPriceToNumber = async (req, res) => {
-  try {
-    const courses = await coursesModel.find();
-    courses.forEach(async (course) => {
-      course.price = parseInt(course.price);
-      await course.save();
-    });
-    res
-      .status(200)
-      .json({ message: "All prices converted successfully", courses });
-  } catch (error) {
-    console.error("Error converting prices:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
 module.exports = {
   createCourses,
   getCourses,
@@ -182,5 +165,4 @@ module.exports = {
   deleteAllCourses,
   getCoursesByCategoryId,
   acceptCourseRequest,
-  convertPriceToNumber,
 };
