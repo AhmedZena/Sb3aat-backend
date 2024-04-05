@@ -77,6 +77,9 @@ const searchRoutes = require("./routes/searchRoute");
 // coupone
 const couponRoutes = require("./routes/couponRoute");
 
+// cart payment
+const cartPaymentRoutes = require("./routes/cartPayment");
+
 // dontenv config
 require("dotenv").config({ path: "./.config.env" });
 console.log(process.env.PORT);
@@ -135,6 +138,9 @@ app.use("/api/search", searchRoutes);
 
 // coupon
 app.use("/api/coupons", couponRoutes);
+
+// cart payment
+app.use("/api/cart", cartPaymentRoutes);
 
 // Socket.IO connection event
 io.on("connection", (socket) => {
