@@ -39,4 +39,12 @@ router.patch(
   freelancerOrClientVerified,
   updateManyProductsInCart
 );
+
+router.delete(
+  "/removeAllProducts",
+  verifyToken,
+  freelancerOrClientVerified,
+  removeAllProductsFromCart
+);
+
 module.exports = router;
