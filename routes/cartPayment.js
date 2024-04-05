@@ -7,6 +7,9 @@ let {
   getCartByUser,
   getAllCarts,
   removeProductFromCart,
+  updateProductInCart,
+  updateManyProductsInCart,
+  removeAllProductsFromCart,
 } = require("../controllers/CartPayment");
 let {
   verifyToken,
@@ -21,5 +24,19 @@ router.delete(
   verifyToken,
   freelancerOrClientVerified,
   removeProductFromCart
+);
+
+router.patch(
+  "/updateProduct/:productId",
+  verifyToken,
+  freelancerOrClientVerified,
+  updateProductInCart
+);
+
+router.patch(
+  "/updateManyProducts",
+  verifyToken,
+  freelancerOrClientVerified,
+  updateManyProductsInCart
 );
 module.exports = router;

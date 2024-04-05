@@ -136,6 +136,71 @@ const getAllCarts = asyncHandler(async (req, res, next) => {
   });
 });
 
+// update product in cart
+const updateProductInCart = asyncHandler(async (req, res, next) => {
+  const { productId } = req.params;
+  const { quantity } = req.body;
+  const cart = await cartPaymentModel.findOne({ user: req.user.id });
+  if (!cart) {
+    return next(new ApiError("Cart not found", 404));
+  }
+  const productExist = cart.cartItems.find((item) => item.product == productId);
+  if (!productExist) {
+    return next(new ApiError("Product not found in cart", 404));
+  }
+  productExist.quantity = quantity;
+  productExist.price = productExist.product.price * quantity;
+  cart.totalCartPrice = cart.cartItems.reduce(
+    (acc, item) => acc + item.price,
+    0
+  );
+  await cart.save();
+  res.status(200).json({
+    status: "success",
+    data: cart,
+  });
+});
+
+// update many products in cart
+const updateManyProductsInCart = asyncHandler(async (req, res, next) => {
+  const { cartItems } = req.body;
+  console.log(cartItems);
+  const cart = await cartPaymentModel.findOne({ user: req.user.id });
+  if (!cart) {
+    return next(new ApiError("Cart not found", 404));
+  }
+  cartItems.forEach((item) => {
+    const productExist = cart.cartItems.find(
+      (cartItem) => cartItem.product == item.productId
+    );
+    if (productExist) {
+      productExist.quantity = item.quantity;
+      productExist.price = productExist.product.price * item.quantity;
+    }
+  });
+  cart.totalCartPrice = cart.cartItems.reduce(
+    (acc, item) => acc + item.price,
+    0
+  );
+  await cart.save();
+  res.status(200).json({
+    status: "success",
+    data: cart,
+  });
+});
+
+// usage of updateManyProductsInCart
+// [
+//   {
+//     productId: "60f4c5a4d0f9f4d9b4a5b2b3",
+//     quantity: 2,
+//   },
+//   {
+//     productId: "60f4c5a4d0f9f4d9b4a5b2b4",
+//     quantity: 3,
+//   },
+// ];
+
 // remove product from cart
 const removeProductFromCart = asyncHandler(async (req, res, next) => {
   const { productId } = req.params;
@@ -159,9 +224,25 @@ const removeProductFromCart = asyncHandler(async (req, res, next) => {
   });
 });
 
+//remove all products from cart
+const removeAllProductsFromCart = asyncHandler(async (req, res, next) => {
+  //  find one and delete
+  const cart = await cartPaymentModel.findOneAndDelete({ user: req.user.id });
+  if (!cart) {
+    return next(new ApiError("Cart not found", 404));
+  }
+  res.status(200).json({
+    status: "success",
+    message: "Cart deleted successfully",
+  });
+});
+
 module.exports = {
   addProductToCart,
   getCartByUser,
   getAllCarts,
   removeProductFromCart,
+  updateProductInCart,
+  updateManyProductsInCart,
+  removeAllProductsFromCart,
 };
