@@ -7,57 +7,25 @@ const cartPaymentModel = require("../models/CartPayment");
 const serviceModel = require("../models/serviceModel");
 const courseModel = require("../models/courses");
 
-/*const CartPaymentModel = mongoose.Schema(
-  {
-    cartItems: [
-      {
-        product: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "service" || "course",
-          required: true,
-        },
-          productType: {
-          type: String,
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-        price: {
-          type: Number,
-          required: true,
-        },
-      },
-    ],
+const couponModel = require("../models/coupon");
 
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    totalCartPrice: {
-      type: Number,
-      required: true,
-    },
-    totalPriceAfterDiscount: {
-      type: Number,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-*/
+// function to calculate total price of cart
+const calculateTotalPrice = (cart) => {
+  // make
+  cart.totalPriceAfterDiscount = undefined;
+  return cart.cartItems.reduce((acc, item) => acc + item.price, 0);
+};
+
 // add product to cart ,
 const addProductToCart = asyncHandler(async (req, res, next) => {
-  const { productId, productType, quantity } = req.body;
+  let { productId, productType, quantity } = req.body;
   // prdouct may be service or course
   let product;
   if (productType === "service") {
     product = await serviceModel.findById(productId);
   } else if (productType === "course") {
     product = await courseModel.findById(productId);
+    quantity = 1;
   }
   if (!product) {
     return next(new ApiError("Product not found", 404));
@@ -88,10 +56,7 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
         price: product.price * quantity,
       });
     }
-    cart.totalCartPrice = cart.cartItems.reduce(
-      (acc, item) => acc + item.price,
-      0
-    );
+    cart.totalCartPrice = calculateTotalPrice(cart);
     await cart.save();
   }
   res.status(200).json({
@@ -150,10 +115,7 @@ const updateProductInCart = asyncHandler(async (req, res, next) => {
   }
   productExist.quantity = quantity;
   productExist.price = productExist.product.price * quantity;
-  cart.totalCartPrice = cart.cartItems.reduce(
-    (acc, item) => acc + item.price,
-    0
-  );
+  cart.totalCartPrice = calculateTotalPrice(cart);
   await cart.save();
   res.status(200).json({
     status: "success",
@@ -178,10 +140,7 @@ const updateManyProductsInCart = asyncHandler(async (req, res, next) => {
       productExist.price = productExist.product.price * item.quantity;
     }
   });
-  cart.totalCartPrice = cart.cartItems.reduce(
-    (acc, item) => acc + item.price,
-    0
-  );
+  cart.totalCartPrice = calculateTotalPrice(cart);
   await cart.save();
   res.status(200).json({
     status: "success",
@@ -213,10 +172,7 @@ const removeProductFromCart = asyncHandler(async (req, res, next) => {
     return next(new ApiError("Product not found in cart", 404));
   }
   cart.cartItems = cart.cartItems.filter((item) => item.product != productId);
-  cart.totalCartPrice = cart.cartItems.reduce(
-    (acc, item) => acc + item.price,
-    0
-  );
+  cart.totalCartPrice = calculateTotalPrice(cart);
   await cart.save();
   res.status(200).json({
     status: "success",
@@ -237,6 +193,27 @@ const removeAllProductsFromCart = asyncHandler(async (req, res, next) => {
   });
 });
 
+// applay coupon
+const applyCoupon = asyncHandler(async (req, res, next) => {
+  const { couponCode } = req.body;
+  const coupon = await couponModel.findOne({ name: couponCode });
+  if (!coupon) {
+    return next(new ApiError("Coupon not found", 404));
+  }
+  const cart = await cartPaymentModel.findOne({ user: req.user.id });
+  if (!cart) {
+    return next(new ApiError("Cart not found", 404));
+  }
+  cart.totalPriceAfterDiscount = Math.round(
+    cart.totalCartPrice - (cart.totalCartPrice * coupon.discount) / 100
+  );
+  await cart.save();
+  res.status(200).json({
+    status: "success",
+    data: cart,
+  });
+});
+
 module.exports = {
   addProductToCart,
   getCartByUser,
@@ -245,4 +222,5 @@ module.exports = {
   updateProductInCart,
   updateManyProductsInCart,
   removeAllProductsFromCart,
+  applyCoupon,
 };

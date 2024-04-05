@@ -10,6 +10,7 @@ let {
   updateProductInCart,
   updateManyProductsInCart,
   removeAllProductsFromCart,
+  applyCoupon,
 } = require("../controllers/CartPayment");
 let {
   verifyToken,
@@ -45,6 +46,13 @@ router.delete(
   verifyToken,
   freelancerOrClientVerified,
   removeAllProductsFromCart
+);
+
+router.patch(
+  "/applyCoupon",
+  verifyToken,
+  freelancerOrClientVerified,
+  applyCoupon
 );
 
 module.exports = router;
