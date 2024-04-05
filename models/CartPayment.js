@@ -9,6 +9,10 @@ const CartPaymentModel = mongoose.Schema(
           ref: "service" || "course",
           required: true,
         },
+        productType: {
+          type: String,
+          required: true,
+        },
         quantity: {
           type: Number,
           required: true,

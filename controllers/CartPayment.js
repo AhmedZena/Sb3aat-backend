@@ -16,6 +16,10 @@ const courseModel = require("../models/courses");
           ref: "service" || "course",
           required: true,
         },
+          productType: {
+          type: String,
+          required: true,
+        },
         quantity: {
           type: Number,
           required: true,
@@ -63,7 +67,9 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
   if (!cart) {
     cart = await cartPaymentModel.create({
       user: req.user.id,
-      cartItems: [{ product: productId, quantity, price: product.price }],
+      cartItems: [
+        { product: productId, productType, quantity, price: product.price },
+      ],
       totalCartPrice: product.price * quantity,
     });
   } else {
@@ -77,6 +83,7 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
     } else {
       cart.cartItems.push({
         product: productId,
+        productType,
         quantity,
         price: product.price * quantity,
       });
@@ -108,6 +115,7 @@ const getCartByUser = asyncHandler(async (req, res, next) => {
       }
       return {
         product,
+        productType: item.productType,
         quantity: item.quantity,
         price: item.price,
       };
