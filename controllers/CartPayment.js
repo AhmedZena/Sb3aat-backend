@@ -123,6 +123,11 @@ const updateProductInCart = asyncHandler(async (req, res, next) => {
   });
 });
 
+// usage
+// {
+//   "quantity": 2
+// }
+
 // update many products in cart
 const updateManyProductsInCart = asyncHandler(async (req, res, next) => {
   const { cartItems } = req.body;
