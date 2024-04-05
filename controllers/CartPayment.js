@@ -59,10 +59,34 @@ const addProductToCart = asyncHandler(async (req, res, next) => {
     cart.totalCartPrice = calculateTotalPrice(cart);
     await cart.save();
   }
+
+  const cartData = await cartPaymentModel.findOne({ user: req.user.id });
+  if (!cartData) {
+    return next(new ApiError("Cart not found", 404));
+  }
+  //   get service or course details
+  const cartItems = await Promise.all(
+    cartData.cartItems.map(async (item) => {
+      let product = await serviceModel.findById(item.product);
+      if (!product) {
+        product = await courseModel.findById(item.product);
+      }
+      return {
+        product,
+        productType: item.productType,
+        quantity: item.quantity,
+        price: item.price,
+      };
+    })
+  );
   res.status(200).json({
-    status: "success",
-    data: cart,
+    cartItems,
+    totalCartPrice: cartData.totalCartPrice,
   });
+  //   res.status(200).json({
+  //     status: "success",
+  //     data: cart,
+  //   });
 });
 
 // get cart by user
