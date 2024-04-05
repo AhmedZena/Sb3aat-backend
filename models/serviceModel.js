@@ -19,7 +19,7 @@ const serviceSchema = mongoose.Schema({
     required: [true, "service description is required"],
   },
   price: {
-    type: Number,
+    type: Number || String,
     required: [true, "service price is required"],
   },
   deliveryTime: {

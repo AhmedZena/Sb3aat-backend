@@ -9,6 +9,7 @@ const {
   deleteAllCourses,
   getCoursesByCategoryId,
   acceptCourseRequest,
+  convertPriceToNumber,
 } = require("../controllers/courses");
 const { adminVerfied } = require("../middlewares/auth");
 
@@ -18,6 +19,8 @@ Router.delete("/", deleteAllCourses);
 
 // Get all Courses
 Router.get("/", getCourses);
+// Convert all prices from string to number
+Router.patch("/convertPriceToNumber", convertPriceToNumber);
 // Get Courses by id
 Router.get("/:id", getCoursesById);
 

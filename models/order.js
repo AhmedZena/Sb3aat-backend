@@ -89,6 +89,7 @@ const orderSchema = new Schema({
   ],
 
   taxPrice: {
+    type: Number,
     default: 0,
   },
 
