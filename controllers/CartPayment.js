@@ -136,8 +136,32 @@ const getAllCarts = asyncHandler(async (req, res, next) => {
   });
 });
 
+// remove product from cart
+const removeProductFromCart = asyncHandler(async (req, res, next) => {
+  const { productId } = req.params;
+  const cart = await cartPaymentModel.findOne({ user: req.user.id });
+  if (!cart) {
+    return next(new ApiError("Cart not found", 404));
+  }
+  const productExist = cart.cartItems.find((item) => item.product == productId);
+  if (!productExist) {
+    return next(new ApiError("Product not found in cart", 404));
+  }
+  cart.cartItems = cart.cartItems.filter((item) => item.product != productId);
+  cart.totalCartPrice = cart.cartItems.reduce(
+    (acc, item) => acc + item.price,
+    0
+  );
+  await cart.save();
+  res.status(200).json({
+    status: "success",
+    data: cart,
+  });
+});
+
 module.exports = {
   addProductToCart,
   getCartByUser,
   getAllCarts,
+  removeProductFromCart,
 };

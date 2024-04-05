@@ -6,6 +6,7 @@ let {
   addProductToCart,
   getCartByUser,
   getAllCarts,
+  removeProductFromCart,
 } = require("../controllers/CartPayment");
 let {
   verifyToken,
@@ -15,4 +16,10 @@ let {
 router.get("/", verifyToken, getCartByUser);
 router.post("/", verifyToken, freelancerOrClientVerified, addProductToCart);
 router.get("/getAllCarts", verifyToken, getAllCarts);
+router.delete(
+  "/removeProduct/:productId",
+  verifyToken,
+  freelancerOrClientVerified,
+  removeProductFromCart
+);
 module.exports = router;
