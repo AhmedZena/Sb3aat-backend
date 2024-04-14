@@ -1,5 +1,5 @@
 const coursesModel = require("../models/courses");
-
+const serviceModel = require("../models/serviceModel");
 const createCourses = (req, res) => {
   const {
     freelancerId,
@@ -9,6 +9,7 @@ const createCourses = (req, res) => {
     price,
     duration,
     courseMaterial,
+    CourseImg,
   } = req.body;
 
   const newCourses = new coursesModel({
@@ -19,6 +20,7 @@ const createCourses = (req, res) => {
     price,
     duration,
     courseMaterial,
+    CourseImg,
   });
 
   newCourses

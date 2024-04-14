@@ -63,11 +63,7 @@ const getPaymentsByClient = (req, res) => {
   console.log(req.user);
   const { id } = req.user;
   console.log(id);
-  console.log(id);
-  console.log(id);
-  console.log(id);
-  console.log(id);
-  console.log(id);
+  
   Payment.find({ clientId: id })
     .then((payments) => {
       if (!payments) {

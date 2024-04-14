@@ -1,29 +1,33 @@
 const Notification = require("../models/notification");
 const { User } = require("../models/users");
+
+// real time socket io connection
+const { io } = require("../server");
+
 // get all notifications
-let getAllNotifications = async (req, res) => {
+const getAllNotifications = async (req, res) => {
   try {
     const notifications = await Notification.find();
     res.status(200).json(notifications);
   } catch (error) {
     res.status(500).send(error.message);
   }
-};
+}
 
-let getNotificationsByUserId = async (req, res) => {
-  console.log(req);
+// get notifications that not read on user id and length of them
+const getUnreadNotificationsByUserId = async (req, res) => {
   try {
-    // Assuming user ID is stored in req.user after authentication
     const notifications = await Notification.find({
       userReference: req.user.id,
+      isRead: false,
     });
-    res.status(200).json(notifications);
+    res.status(200).json({ length: notifications.length, notifications });
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
 
-let updateNotificationReadStatus = async (req, res) => {
+const updateNotificationReadStatus = async (req, res) => {
   try {
     const notification = await Notification.findByIdAndUpdate(
       req.params.id,
@@ -36,7 +40,7 @@ let updateNotificationReadStatus = async (req, res) => {
   }
 };
 
-let postNotification = async (req, res) => {
+const postNotification = async (req, res) => {
   console.log(req.user); // { id: '60f3e3e3e3e3e3e3e3e3e3e3', role: 'admin'}
   // i want whosend to be the user id from the token
   try {
@@ -61,15 +65,45 @@ let postNotification = async (req, res) => {
     });
 
     await newNotification.save();
+
+    // Emit the new notification to the userReference
+    // io.emit(`notification-${userReference}`, newNotification);
+    // io.to(userReference.toString()).emit("newNotification", newNotification);
+    io.emit("newNotification", newNotification);
+
     res.status(201).json(newNotification);
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
 
+
+// get by user id
+const getNotificationByUserId = async (req, res) => {
+    //  initialState: {
+//     total: 0,
+//     readCount: 0,
+//     unreadCount: 0,
+//     notifications: [],
+//   },
+  try {
+    const notifications = await Notification.find({ userReference: req.user.id });
+    res.status(200).json({
+        total: notifications.length,
+        readCount: notifications.filter((n) => n.isRead).length,
+        unreadCount: notifications.filter((n) => !n.isRead).length,
+        notifications,
+        });
+    }
+    catch (error) {
+    res.status(500).send(error.message);
+    }
+}
+
 module.exports = {
   getAllNotifications,
-  getNotificationsByUserId,
   updateNotificationReadStatus,
   postNotification,
+  getUnreadNotificationsByUserId,
+    getNotificationByUserId,
 };

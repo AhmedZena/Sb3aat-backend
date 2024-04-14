@@ -12,6 +12,7 @@ const {
   convertUserToAdmin,
   getLengthOfData,
   getUserByIdCtrl,
+  editUserById
 } = require("../controllers/authController");
 const {
   verifyToken,
@@ -33,4 +34,5 @@ router.delete("/deleteUser/:id", verifyToken, deleteUserById);
 router.patch("/convertToAdmin/:id", verifyToken, convertUserToAdmin);
 router.get("/dataLength", verifyToken, getLengthOfData);
 router.get("/getUserById/:id", getUserByIdCtrl); // for checking if user exists or not when updating
+router.patch("/editUser/:id",  editUserById);
 module.exports = router;

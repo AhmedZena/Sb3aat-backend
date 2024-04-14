@@ -1,10 +1,25 @@
 // Importing modules and make app
 const express = require("express");
-const app = express();
 const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
 
+// real time socket io connection
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+
+// app
+const app = express();
+
+// socket io
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
+
+module.exports.io = io;
 
 const corsOptions = {
   origin: "*", // Allows all origins
@@ -62,6 +77,12 @@ const searchRoutes = require("./routes/searchRoute");
 // stripe 
 const stripe = require("./routes/stripe");
 
+
+// coupone
+const couponRoutes = require("./routes/couponRoute");
+
+// cart payment
+const cartPaymentRoutes = require("./routes/cartPayment");
 
 // dontenv config
 require("dotenv").config({ path: "./.config.env" });
@@ -122,6 +143,28 @@ app.use("/api/conversations", conversationRoutes);
 // search
 app.use("/api/search", searchRoutes);
 
+// coupon
+app.use("/api/coupons", couponRoutes);
+
+// cart payment
+app.use("/api/cart", cartPaymentRoutes);
+
+// Socket.IO connection event
+io.on("connection", (socket) => {
+  console.log("a user connected");
+
+  // Example of handling a custom event
+  socket.on("customEvent", (data) => {
+    console.log("Received custom event with data:", data);
+    // Handle the event
+  });
+
+  // Disconnect event
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
+
 // Handling unhandled routes
 app.all("*", (req, res, next) => {
   next(new ApiError(`Can't find ${req.originalUrl} on this server`, 400));
@@ -132,7 +175,7 @@ app.use(errorMiddleWare);
 
 // Listening to port
 let port = process.env.PORT || 8000;
-const server = app.listen(port, () => {
+const server = httpServer.listen(port, () => {
   console.log(`Listening to port ${port}...`);
 });
 
