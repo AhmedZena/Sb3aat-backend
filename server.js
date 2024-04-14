@@ -74,6 +74,10 @@ const conversationRoutes = require("./routes/conversation");
 // search
 const searchRoutes = require("./routes/searchRoute");
 
+// stripe 
+const stripe = require("./routes/stripe");
+
+
 // coupone
 const couponRoutes = require("./routes/couponRoute");
 
@@ -129,6 +133,9 @@ app.use("/api/notifications", notificationRoutes);
 
 // payment
 app.use("/api/payments", paymentRoutes);
+
+// stripe
+app.use("/api/stripe", stripe);
 
 //conversation route
 app.use("/api/conversations", conversationRoutes);

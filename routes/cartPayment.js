@@ -11,12 +11,14 @@ let {
   updateManyProductsInCart,
   removeAllProductsFromCart,
   applyCoupon,
+  updateCart
 } = require("../controllers/CartPayment");
 let {
   verifyToken,
   freelancerOrClientVerified,
 } = require("../middlewares/auth");
 
+router.patch("/payment/:cartId", verifyToken, updateCart);
 router.get("/", verifyToken, getCartByUser);
 router.post("/", verifyToken, freelancerOrClientVerified, addProductToCart);
 router.get("/getAllCarts", verifyToken, getAllCarts);
