@@ -242,6 +242,19 @@ const applyCoupon = asyncHandler(async (req, res, next) => {
     data: cart,
   });
 });
+const updateCart = asyncHandler(async (req, res, next) => {
+  const { cartId  } = req.params;
+  const cart = await cartPaymentModel.findOne({ _id: cartId });
+  if (!cart) {
+    return next(new ApiError("Cart not found", 404));
+  }
+  cart.isPaid = true;
+  await cart.save();
+  res.status(200).json({
+    status: "success",
+    data: cart,
+  });
+});
 
 module.exports = {
   addProductToCart,
@@ -252,4 +265,5 @@ module.exports = {
   updateManyProductsInCart,
   removeAllProductsFromCart,
   applyCoupon,
+  updateCart
 };

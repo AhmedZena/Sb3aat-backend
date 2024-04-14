@@ -36,6 +36,10 @@ const CartPaymentModel = mongoose.Schema(
     totalPriceAfterDiscount: {
       type: Number,
     },
+    isPaid:{
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
