@@ -74,6 +74,16 @@ const conversationRoutes = require("./routes/conversation");
 // search
 const searchRoutes = require("./routes/searchRoute");
 
+// stripe 
+const stripe = require("./routes/stripe");
+
+
+// coupone
+const couponRoutes = require("./routes/couponRoute");
+
+// cart payment
+const cartPaymentRoutes = require("./routes/cartPayment");
+
 // dontenv config
 require("dotenv").config({ path: "./.config.env" });
 console.log(process.env.PORT);
@@ -124,11 +134,20 @@ app.use("/api/notifications", notificationRoutes);
 // payment
 app.use("/api/payments", paymentRoutes);
 
+// stripe
+app.use("/api/stripe", stripe);
+
 //conversation route
 app.use("/api/conversations", conversationRoutes);
 
 // search
 app.use("/api/search", searchRoutes);
+
+// coupon
+app.use("/api/coupons", couponRoutes);
+
+// cart payment
+app.use("/api/cart", cartPaymentRoutes);
 
 // Socket.IO connection event
 io.on("connection", (socket) => {

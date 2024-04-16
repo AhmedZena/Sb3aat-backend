@@ -11,16 +11,16 @@ const coursesSchema = new Schema({
     type: String,
     required: [true, "course description is required"],
   },
-  freelancerId: { // Changed field name from freelanceId to freelancerId
-    type: Schema.Types.ObjectId,
-    required: [true, "freelancer idd is required"],
+  freelanceId: {
+    type: String,
+    required: [true, "freelancer idd   is required"],
   },
   categoryId: {
     type: Schema.Types.ObjectId,
     required: [true, "course category is required"],
   },
   price: {
-    type: String,
+    type: Number || String,
     required: [true, "course price is required"],
   },
   duration: {

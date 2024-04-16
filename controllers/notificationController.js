@@ -77,9 +77,33 @@ const postNotification = async (req, res) => {
   }
 };
 
+
+// get by user id
+const getNotificationByUserId = async (req, res) => {
+    //  initialState: {
+//     total: 0,
+//     readCount: 0,
+//     unreadCount: 0,
+//     notifications: [],
+//   },
+  try {
+    const notifications = await Notification.find({ userReference: req.user.id });
+    res.status(200).json({
+        total: notifications.length,
+        readCount: notifications.filter((n) => n.isRead).length,
+        unreadCount: notifications.filter((n) => !n.isRead).length,
+        notifications,
+        });
+    }
+    catch (error) {
+    res.status(500).send(error.message);
+    }
+}
+
 module.exports = {
   getAllNotifications,
   updateNotificationReadStatus,
   postNotification,
   getUnreadNotificationsByUserId,
+    getNotificationByUserId,
 };
