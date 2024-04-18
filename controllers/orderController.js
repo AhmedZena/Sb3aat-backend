@@ -62,7 +62,7 @@ const OrderModel = require("../models/order");
 
 const cartPaymentModel = require("../models/CartPayment");
 
-const ApiError = require("../utils/ApiError");
+// const ApiError = require("../utils/ApiError");
 const factory = require("../util/handlersFactory");
 const asyncHandler = require("express-async-handler");
 
@@ -70,7 +70,11 @@ const asyncHandler = require("express-async-handler");
 const createOrder = asyncHandler(async (req, res, next) => {
   const cart = await cartPaymentModel.findById(req.body.cartId);
   if (!cart) {
-    return next(new ApiError("Cart not found", 404));
+    // return next(new ApiError("Cart not found", 404));
+    res.status(404).json({
+      status: "fail",
+      message: "Cart not found",
+    });
   }
   const cartPrice = cart.totalPriceAfterDiscount
     ? cart.totalPriceAfterDiscount

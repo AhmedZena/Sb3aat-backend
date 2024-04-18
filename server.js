@@ -32,7 +32,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // import util ApiError
-let ApiError = require("./util/apiError");
+const ApiError = require("./util/apiError");
 
 // import middleware of errors
 let errorMiddleWare = require("./middlewares/errorMiddleware");
@@ -74,9 +74,8 @@ const conversationRoutes = require("./routes/conversation");
 // search
 const searchRoutes = require("./routes/searchRoute");
 
-// stripe 
+// stripe
 const stripe = require("./routes/stripe");
-
 
 // coupone
 const couponRoutes = require("./routes/couponRoute");
