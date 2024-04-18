@@ -1,129 +1,112 @@
 // const OrderModel = require("../models/order");
 const OrderModel = require("../models/order");
-const serviceModel = require("../models/serviceModel");
-const courseModel = require("../models/courses");
+/*
+ user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: [true, "Order must belong to a user"],
+  },
+
+  cartItems: [
+    {
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "service" || "course",
+        required: true,
+      },
+      productType: {
+        type: String,
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+
+  taxPrice: {
+    type: Number,
+    default: 0,
+  },
+
+  shippingPrice: {
+    type: Number,
+    default: 0,
+  },
+
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
+
+  paymentMethod: {
+    type: String,
+
+    default: "card",
+  },
+
+  isPaid: {
+    type: Boolean,
+    default: false,
+  },
+
+  paidAt: {
+    type: Date,
+  },
+*/
+
+const cartPaymentModel = require("../models/CartPayment");
+
+const ApiError = require("../utils/ApiError");
+const factory = require("../util/handlersFactory");
+const asyncHandler = require("express-async-handler");
+
 // create order
-const createOrder = (req, res) => {
-  console.log(req.body);
-  let body = req.body;
-  if (!body) {
-    return res.status(400).json({ error: "Empty request body" });
+const createOrder = asyncHandler(async (req, res, next) => {
+  const cart = await cartPaymentModel.findById(req.body.cartId);
+  if (!cart) {
+    return next(new ApiError("Cart not found", 404));
   }
-  const newOrder = new OrderModel(body);
-  newOrder
-    .save()
-    .then((savedOrder) => {
-      res.status(201).json(savedOrder);
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({ error: "Failed to create order", details: error });
-    });
-};
+  const cartPrice = cart.totalPriceAfterDiscount
+    ? cart.totalPriceAfterDiscount
+    : cart.totalCartPrice;
+
+  const order = await OrderModel.create({
+    user: req.user.id,
+    cartItems: cart.cartItems,
+    totalPrice: cartPrice,
+    paymentMethod: req.body.paymentMethod,
+  });
+  res.status(201).json({
+    status: "success",
+    data: {
+      order,
+    },
+  });
+});
 
 // get all orders
-const getOrders = (req, res) => {
-  OrderModel.find()
-    .then((orders) => {
-      res.status(200).json(orders);
-    })
-    .catch((error) => {
-      res
-        .status(500)
-        .json({ error: "Failed to retrieve orders", details: error });
-    });
-};
+const getOrders = (req, res) => {};
 
 //  get Orders for Client by id
-const getOrderByClient = async (req, res) => {
-  try {
-    const orders = await OrderModel.find({ clientId: req.params.clientId });
-
-    const populatedOrders = await Promise.all(
-      orders.map(async (order) => {
-        let type = null;
-        let service = await serviceModel.findOne({
-          _id: order.serviceOrCourseId,
-        });
-        let course = null;
-
-        if (!service) {
-          course = await courseModel.findOne({ _id: order.serviceOrCourseId });
-          if (course) type = "course";
-        } else {
-          type = "service";
-        }
-
-        return { ...order.toObject(), service, course, type };
-      })
-    );
-
-    res.status(200).json(populatedOrders);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+const getOrderByClient = async (req, res) => {};
 
 //  get Orders for freelancer by id
-const getOrderByFreelancer = async (req, res) => {
-  try {
-    const orders = await OrderModel.find({
-      freelancerId: req.params.freelancerId,
-    });
-    res.status(200).json(orders);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+const getOrderByFreelancer = async (req, res) => {};
 
 // get order by id
-const getOrderById = async (req, res) => {
-  try {
-    // const order = await OrderModel.findOne({ orderId: req.params.orderId });
-
-    const order = await OrderModel.findById(req.params.orderId);
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-    res.status(200).json(order);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+const getOrderById = async (req, res) => {};
 
 // update order
-const updateOrderById = async (req, res) => {
-  try {
-    const order = await OrderModel.findOneAndUpdate(
-      //   { orderId: req.params.orderId },
-      { _id: req.params.orderId },
-      { $set: req.body },
-      { new: true }
-    );
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-    res.status(200).json(order);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+const updateOrderById = async (req, res) => {};
 
 // delete order
-const deleteOrder = async (req, res) => {
-  try {
-    const order = await OrderModel.findOneAndDelete({
-      //   orderId: req.params.orderId,
-      _id: req.params.orderId,
-    });
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
-    }
-    res.status(200).json({ message: "Order deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+const deleteOrder = async (req, res) => {};
 
 module.exports = {
   createOrder,
