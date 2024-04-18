@@ -49,6 +49,20 @@ const getCourses = (req, res) => {
     });
 };
 
+// get not accepted courses
+const getNotAcceptedCourses = (req, res) => {
+  coursesModel
+    .find({ isAccepted: false })
+    .then((courses) => {
+      res.status(200).json(courses);
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error: "Failed to retrieve courses", details: error });
+    });
+};
+
 //get courses by subcategory id
 const getCoursesByCategoryId = async (req, res) => {
   try {
@@ -166,4 +180,5 @@ module.exports = {
   deleteAllCourses,
   getCoursesByCategoryId,
   acceptCourseRequest,
+  getNotAcceptedCourses,
 };
