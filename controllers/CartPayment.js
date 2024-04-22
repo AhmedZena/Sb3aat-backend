@@ -217,6 +217,8 @@ const removeAllProductsFromCart = asyncHandler(async (req, res, next) => {
   if (!cart) {
     return next(new ApiError("Cart not found", 404));
   }
+  
+  cart.isPaid = false;
   res.status(200).json({
     status: "success",
     message: "Cart deleted successfully",
@@ -252,6 +254,8 @@ const updateCart = asyncHandler(async (req, res, next) => {
     return next(new ApiError("Cart not found", 404));
   }
   cart.isPaid = true;
+//   delete cart 
+cart.cartItems = [];
   await cart.save();
   res.status(200).json({
     status: "success",
