@@ -248,20 +248,32 @@ const applyCoupon = asyncHandler(async (req, res, next) => {
 
 // update cart to isPaid
 const updateCart = asyncHandler(async (req, res, next) => {
+ const { cartId } = req.params;
+  const cart = await cartPaymentModel.findOneAndDelete({ _id: cartId });
+    if (!cart) {
+        return next(new ApiError("Cart not found", 404));
+    }
+    res.status(200).json({
+        status: "success",
+        message: "Cart deleted successfully",
+    });
+}
+);
+
+
+// remove the cart 
+const removeCart = asyncHandler(async (req, res, next) => {
   const { cartId } = req.params;
-  const cart = await cartPaymentModel.findOne({ _id: cartId });
-  if (!cart) {
-    return next(new ApiError("Cart not found", 404));
-  }
-  cart.isPaid = true;
-//   delete cart 
-cart.cartItems = [];
-  await cart.save();
-  res.status(200).json({
-    status: "success",
-    data: cart,
-  });
-});
+  const cart = await cartPaymentModel.findOneAndDelete({ _id: cartId });
+    if (!cart) {
+        return next(new ApiError("Cart not found", 404));
+    }
+    res.status(200).json({
+        status: "success",
+        message: "Cart deleted successfully",
+    });
+}
+);
 
 module.exports = {
   addProductToCart,
