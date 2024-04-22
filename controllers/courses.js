@@ -2,7 +2,7 @@ const coursesModel = require("../models/courses");
 const serviceModel = require("../models/serviceModel");
 const createCourses = (req, res) => {
   const {
-    freelancerId,
+    freelanceId,
     title,
     description,
     categoryId,
@@ -13,7 +13,7 @@ const createCourses = (req, res) => {
   } = req.body;
 
   const newCourses = new coursesModel({
-    freelancerId,
+    freelanceId,
     title,
     description,
     categoryId,
